@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/prod2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        android:text="Update products"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/edit_text_name2"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:autofillHints="name"
+        android:hint="@string/product_name"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/edit_text_id2"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:autofillHints="id"
+        android:hint="@string/product_id"
+        android:inputType="number" />
+
+
+    <EditText
+        android:id="@+id/edit_text_description2"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:autofillHints="description"
+        android:hint="@string/product_description"
+        android:inputType="textMultiLine" />
+
+    <EditText
+        android:id="@+id/edit_text_price2"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:autofillHints="price"
+        android:hint="@string/product_price"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/edit_text_quantity2"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:autofillHints="quantity"
+        android:hint="@string/product_quantity"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/btn_picture2"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+
+        android:text="@string/product_pic"
+        />
+
+    <Button
+        android:id="@+id/button_save2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save" />
+
+
+
+
+
+</LinearLayout>

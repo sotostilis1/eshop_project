@@ -1,0 +1,66 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn = "navigation_view"
+    >
+    <item
+        android:id="@+id/profile"
+        android:icon="@drawable/ic_profile"
+        android:title="Profile"
+        />
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/ic_home"
+        android:title="Home"
+        />
+
+
+    <item
+        android:id="@+id/suppliers"
+        android:icon="@drawable/ic_cart"
+        android:title="Suppliers">
+        <menu>
+            <group>
+                <item
+                    android:id="@+id/add_supp_option"
+                    android:title="@string/add_supp" />
+                <item
+                    android:id="@+id/drop_supp_option"
+                    android:title="@string/delete_supp" />
+            </group>
+        </menu>
+    </item>
+
+
+    <item
+        android:id="@+id/products"
+        android:checked="true"
+        android:title="Products">
+        <menu>
+
+            <item
+                android:id="@+id/add_product_option"
+                android:title="@string/add_product" />
+            <item
+                android:id="@+id/drop_product_option"
+                android:title="@string/delete_product" />
+            <item
+                android:id="@+id/edit_product_option"
+                android:title="@string/edit_product" />
+
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/supplies"
+
+        android:title="Transactions">
+        <menu>
+            <group>
+                <item
+                    android:id="@+id/add_transaction"
+                    android:title="Add transaction" />
+
+            </group>
+        </menu>
+    </item>
+</menu>
