@@ -3,7 +3,10 @@ package com.example.eshop_v2;
 import static com.example.eshop_v2.MainActivity.fragmentManager;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.hardware.lights.LightState;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +32,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,6 +49,12 @@ public class AddProductsFragment extends Fragment {
 
     TextView txtview;
 
+
+    private static final int PICK_IMAGE_REQUEST = 100;
+    private Uri imagePath;
+    private Bitmap imageToStore;
+
+    ImageView productImage;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -97,6 +110,16 @@ public class AddProductsFragment extends Fragment {
         EdtTxt4 = view.findViewById(R.id.edit_text_price);
         EdtTxt5 = view.findViewById(R.id.edit_text_quantity);
         Btn_picture = view.findViewById(R.id.btn_picture);
+        productImage = view.findViewById(R.id.product_image);
+        //vagg
+
+        productImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
         Btn_picture.setOnTouchListener(new View.OnTouchListener() {
 
 
@@ -185,11 +208,35 @@ public class AddProductsFragment extends Fragment {
             }
         });
 
-
-
-
-
-
         return view;
+    }
+
+    private void choseImage()
+    {
+        try{
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(intent.ACTION_GET_CONTENT);
+            startActivityForResult(intent,PICK_IMAGE_REQUEST);
+        }catch (Exception e)
+        {
+            Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT ).show();
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
+        try {
+            super.onActivityResult(requestCode, resultCode, data);
+
+            if (resultCode == getActivity().RESULT_OK && resultCode == PICK_IMAGE_REQUEST && data != null && data.getData() != null) {
+                imagePath = data.getData();
+                imageToStore = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),imagePath);
+                //productImage;
+            }
+        }catch (Exception e)
+        {
+            Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT ).show();
+        }
+
     }
 }
