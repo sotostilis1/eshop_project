@@ -32,10 +32,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
 
-    private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
-    private List<products> list;
-    private RecyclerAdapter adapter;
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -77,16 +74,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragmentManager.beginTransaction().add(R.id.fragment_container, new CentralFragment()).commit();
         }
 
-        productsDAO dao = productsDatabase.productsDAOtemp();
 
-
-        recyclerView = findViewById(R.id.recyclerview);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        list = dao.getProducts();
-        adapter = new RecyclerAdapter(list);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(adapter);
 
 
 
@@ -100,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (item.getItemId()){
             case R.id.home:
-                showFragment(new QueryProductFragment());
+                showFragment(new HomeFragment());
                 break;
             case R.id.profile:
                 showFragment(new ProductsFragment());
