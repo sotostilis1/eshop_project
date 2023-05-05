@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    private List<String> list;
+    private List<products> list;
     private RecyclerAdapter adapter;
 
     @SuppressLint("MissingInflatedId")
@@ -43,13 +43,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        recyclerView = findViewById(R.id.recyclerview);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        list = Arrays.asList(getResources().getStringArray(R.array.animals));
-        adapter = new RecyclerAdapter(list);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(adapter);
+
 
 
 
@@ -82,6 +76,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             fragmentManager.beginTransaction().add(R.id.fragment_container, new CentralFragment()).commit();
         }
+
+        productsDAO dao = productsDatabase.productsDAOtemp();
+
+
+        recyclerView = findViewById(R.id.recyclerview);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        list = dao.getProducts();
+        adapter = new RecyclerAdapter(list);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
+
+
 
 
 
