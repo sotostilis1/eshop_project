@@ -70,7 +70,7 @@ public class QueryProductFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_query, container, false);
 
         txtview = view.findViewById(R.id.textview1);
-        imageview = view.findViewById(R.id.image_view_product);
+
 
                 List<products> Products = MainActivity.productsDatabase.productsDAOtemp().getProducts();
                 String result  = "";

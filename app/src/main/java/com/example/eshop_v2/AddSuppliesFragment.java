@@ -115,6 +115,19 @@ public class AddSuppliesFragment extends Fragment {
 
                     MainActivity.productsDatabase.productsDAOtemp().addSupplies(supplies);
 
+                    products prods = new products();
+                    prods.setId(Var_productid);
+
+                    prods.setName(MainActivity.productsDatabase.productsDAOtemp().getById(Var_productid).getName());
+                    prods.setPrice(MainActivity.productsDatabase.productsDAOtemp().getById(Var_productid).getPrice());
+                    prods.setDescription(MainActivity.productsDatabase.productsDAOtemp().getById(Var_productid).getDescription());
+
+                    int i = (MainActivity.productsDatabase.productsDAOtemp().getById(Var_productid).getQuantity() + Var_productquantity);
+                    prods.setQuantity(i);
+
+                    MainActivity.productsDatabase.productsDAOtemp().updateProducts(prods);
+
+
                 } catch (Exception e) {
                     String message = e.getMessage();
                     System.out.println(message);

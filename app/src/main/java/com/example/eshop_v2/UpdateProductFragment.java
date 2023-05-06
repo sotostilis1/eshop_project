@@ -152,12 +152,8 @@ public class UpdateProductFragment extends Fragment {
                         prods.setQuantity(Var_productquantity);
                     }
 
-
-
-
-
-
                     MainActivity.productsDatabase.productsDAOtemp().updateProducts(prods);
+                    Toast.makeText(getActivity(),"product updated",Toast.LENGTH_LONG).show();
 
 //                    GIA TIN FIREBASE
 //                    MainActivity.db.
@@ -181,7 +177,7 @@ public class UpdateProductFragment extends Fragment {
                     System.out.println(message);
                     Toast.makeText(getActivity(),message,Toast.LENGTH_LONG).show();
                 }
-                Toast.makeText(getActivity(),"product updated",Toast.LENGTH_LONG).show();
+
                 EdtTxt1.setText("");
                 EdtTxt2.setText("");
                 EdtTxt3.setText("");
