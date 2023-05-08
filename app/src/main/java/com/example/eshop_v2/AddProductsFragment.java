@@ -1,5 +1,6 @@
 package com.example.eshop_v2;
 
+import static android.app.Activity.RESULT_OK;
 import static com.example.eshop_v2.MainActivity.fragmentManager;
 
 import android.annotation.SuppressLint;
@@ -116,7 +117,7 @@ public class AddProductsFragment extends Fragment {
         productImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                choseImage();
             }
         });
 
@@ -228,10 +229,10 @@ public class AddProductsFragment extends Fragment {
         try {
             super.onActivityResult(requestCode, resultCode, data);
 
-            if (resultCode == getActivity().RESULT_OK && resultCode == PICK_IMAGE_REQUEST && data != null && data.getData() != null) {
+            if (resultCode == RESULT_OK && data != null && data.getData() != null) {
                 imagePath = data.getData();
                 imageToStore = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),imagePath);
-                //productImage;
+                productImage.setImageBitmap(imageToStore);
             }
         }catch (Exception e)
         {
