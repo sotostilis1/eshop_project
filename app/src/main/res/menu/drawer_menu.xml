@@ -63,4 +63,20 @@
             </group>
         </menu>
     </item>
+    <item
+        android:id="@+id/customers"
+
+        android:title="Customers">
+        <menu>
+            <group>
+                <item
+                    android:id="@+id/add_customer"
+                    android:title="Add Customer" />
+                <item
+                    android:id="@+id/del_customer"
+                    android:title="Delete Customer" />
+
+            </group>
+        </menu>
+    </item>
 </menu>

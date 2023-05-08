@@ -56,9 +56,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-
-
         db = FirebaseFirestore.getInstance();
         fragmentManager = getSupportFragmentManager();
         productsDatabase =
@@ -113,6 +110,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.add_transaction:
                 showFragment(new AddSuppliesFragment());
+                break;
+            case R.id.add_customer:
+                showFragment(new AddCustomerFragment());
+                break;
+            case R.id.del_customer:
+                showFragment(new DeleteCustomerFragment());
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
