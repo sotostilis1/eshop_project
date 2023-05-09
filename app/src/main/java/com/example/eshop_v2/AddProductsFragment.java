@@ -1,10 +1,14 @@
 package com.example.eshop_v2;
 
 import static android.app.Activity.RESULT_OK;
+import static android.bluetooth.BluetoothClass.Service.CAPTURE;
+import static android.provider.ContactsContract.Contacts.Photo.PHOTO;
 import static com.example.eshop_v2.MainActivity.fragmentManager;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.hardware.lights.LightState;
 import android.net.Uri;
@@ -15,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -28,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -41,21 +47,28 @@ import javax.annotation.Nullable;
  * Use the {@link AddProductsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddProductsFragment extends Fragment {
+public class AddProductsFragment extends Fragment implements View.OnClickListener{
 
     public static FragmentManager fragmentManager;
 
     EditText EdtTxt1 , EdtTxt2 , EdtTxt3 ,EdtTxt4 ,EdtTxt5;
     Button Btn_save , Btn_picture;
-
     TextView txtview;
 
-
+    ImageView productImage;
+    private static final int SELECT_PHOTO = 1;
+    private static final int CAPTURE_PHOTO = 2;
+    private ProgressDialog progressBar;
+    private int progressBarStatus = 0;
+    private Handler progressBarbHandler = new Handler();
+    private boolean hastmageChanged = false;
+    DbHelper dbHelper;
+    Bitmap thumbnail;
     private static final int PICK_IMAGE_REQUEST = 100;
     private Uri imagePath;
     private Bitmap imageToStore;
 
-    ImageView productImage;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -113,11 +126,14 @@ public class AddProductsFragment extends Fragment {
         Btn_picture = view.findViewById(R.id.btn_picture);
         productImage = view.findViewById(R.id.product_image);
         //vagg
+        productImage.setOnClickListener(this);
+        dbHelper = new DbHelper(this);
+
 
         productImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                choseImage();
+
             }
         });
 
@@ -240,4 +256,59 @@ public class AddProductsFragment extends Fragment {
         }
 
     }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.product_image:
+                new MaterialDialog.Builder(getActivity())
+                        .title("Set your image")
+                        .items(R.array.uploadImages)
+                        .itemsIds(R.array.itemIds)
+                        .itemsCallback(new MaterialDialog.ListCallback() {
+                            public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                switch (which) {
+                                    case 0:
+                                        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                                        photoPickerIntent.setType("image/*");
+                                        startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+                                        break;
+                                    case 1:
+                                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                        startActivityForResult(intent, CAPTURE_PHOTO);
+                                        break;
+                                    case 2:
+                                        productImage.setImageResource(R.drawable.ic_add);
+                                        break;
+                                }
+                            }
+                        })
+                        .show();
+                break;
+        }
+    }
+
+    public void onRequestPermissopnsResult(int requestCode, String[] permission , int grantResult[])
+    {
+        if(requestCode==0)
+        {
+            if(grantResult.length > 0 && grantResult[0] == PackageManager.PERMISSION_GRANTED
+                && grantResult[1] == PackageManager.PERMISSION_GRANTED )
+            {
+                productImage.setEnabled(true);
+            }
+        }
+    }
+
+    public void setProgressBar()
+    {
+        progressBar = new ProgressDialog(getActivity());
+        progressBar.setCancelable(true);
+        progressBar.setMessage("Please wait");
+        progressBar.setProgress(0);
+        progressBar.setMax(100);
+        progressBar.show();
+        progressBarStatus=0;
+    }
+
 }
