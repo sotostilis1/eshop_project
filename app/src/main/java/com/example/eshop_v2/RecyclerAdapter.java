@@ -32,10 +32,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         String name = Products.getName();
         int Qty = Products.getQuantity();
         double price = Products.getPrice();
+        String desc = Products.getDescription();
 
 
-
-
+        holder.TextViewDesc.setText(desc);
         holder.TextViewName.setText(name);
         holder.TextViewQty.setText(String.valueOf(Qty));
         holder.TextViewPrice.setText(String.valueOf(price));
@@ -52,12 +52,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         TextView TextViewName;
         TextView TextViewQty;
         TextView TextViewPrice;
+        TextView TextViewDesc;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             TextViewName = itemView.findViewById(R.id.txtview_name);
             TextViewQty = itemView.findViewById(R.id.txtview_quantity);
             TextViewPrice = itemView.findViewById(R.id.txtview_price);
+            TextViewDesc = itemView.findViewById(R.id.txtview_description);
 
         }
     }
