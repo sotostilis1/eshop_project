@@ -13,13 +13,20 @@
         android:elevation="3dp"
         android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="@string/app_name" />
+        app:title="@string/app_name" >
+
+
+
+    </androidx.appcompat.widget.Toolbar>
 
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="412dp"
         android:layout_height="630dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" >
+
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

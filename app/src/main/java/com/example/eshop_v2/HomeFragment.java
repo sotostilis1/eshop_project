@@ -19,7 +19,6 @@ import java.util.List;
  */
 public class HomeFragment extends Fragment {
 
-
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private List<products> list;
@@ -78,6 +77,7 @@ public class HomeFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerview);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
+
         list = dao.getProducts();
         adapter = new RecyclerAdapter(list);
         recyclerView.setHasFixedSize(true);

@@ -1,20 +1,21 @@
 package com.example.eshop_v2;
 
 import static android.app.Activity.RESULT_OK;
-import static android.bluetooth.BluetoothClass.Service.CAPTURE;
-import static android.provider.ContactsContract.Contacts.Photo.PHOTO;
-import static com.example.eshop_v2.MainActivity.fragmentManager;
 
 import android.annotation.SuppressLint;
+import android.Manifest;
+
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.hardware.lights.LightState;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -22,6 +23,9 @@ import androidx.fragment.app.FragmentManager;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,30 +33,27 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AddProductsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddProductsFragment extends Fragment implements View.OnClickListener{
+public class  AddProductsFragment extends Fragment {
 
     public static FragmentManager fragmentManager;
 
-    EditText EdtTxt1 , EdtTxt2 , EdtTxt3 ,EdtTxt4 ,EdtTxt5;
-    Button Btn_save , Btn_picture;
+    EditText EdtTxt1, EdtTxt2, EdtTxt3, EdtTxt4, EdtTxt5;
+    Button Btn_save, Btn_picture , Btn_add;
     TextView txtview;
 
     ImageView productImage;
@@ -64,10 +65,14 @@ public class AddProductsFragment extends Fragment implements View.OnClickListene
     private boolean hastmageChanged = false;
     DbHelper dbHelper;
     Bitmap thumbnail;
+
+    ImageButton actionsort;
+
+    public static Context contextOfApplication;
+
     private static final int PICK_IMAGE_REQUEST = 100;
     private Uri imagePath;
     private Bitmap imageToStore;
-
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -125,15 +130,40 @@ public class AddProductsFragment extends Fragment implements View.OnClickListene
         EdtTxt5 = view.findViewById(R.id.edit_text_quantity);
         Btn_picture = view.findViewById(R.id.btn_picture);
         productImage = view.findViewById(R.id.product_image);
+        actionsort = view.findViewById(R.id.action_sort);
         //vagg
-        productImage.setOnClickListener(this);
-        dbHelper = new DbHelper(this);
 
+        int permissionCheckStorage = ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.CAMERA);
+        if (permissionCheckStorage == PackageManager.PERMISSION_DENIED) {
+            productImage.setEnabled(false);
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+        } else {
+            productImage.setEnabled(true);
+        }
+        dbHelper = new DbHelper(getActivity());
+
+        Btn_add = view.findViewById(R.id.add);
+        Btn_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addToDb(view);
+            }
+        });;
+
+
+
+        actionsort.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                actionsort();
+            }
+        });
 
         productImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                choseImagee(view);
             }
         });
 
@@ -152,8 +182,6 @@ public class AddProductsFragment extends Fragment implements View.OnClickListene
                 return false;
             }
         });
-
-
 
 
         Btn_save = view.findViewById(R.id.button_save);
@@ -180,7 +208,6 @@ public class AddProductsFragment extends Fragment implements View.OnClickListene
                 }
                 String Var_productname = EdtTxt1.getText().toString();
                 String Var_productdesc = EdtTxt3.getText().toString();
-
 
 
                 try {
@@ -213,9 +240,9 @@ public class AddProductsFragment extends Fragment implements View.OnClickListene
                 } catch (Exception e) {
                     String message = e.getMessage();
                     System.out.println(message);
-                    Toast.makeText(getActivity(),message,Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
                 }
-                Toast.makeText(getActivity(),"product added",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "product added", Toast.LENGTH_LONG).show();
                 EdtTxt1.setText("");
                 EdtTxt2.setText("");
                 EdtTxt3.setText("");
@@ -228,20 +255,18 @@ public class AddProductsFragment extends Fragment implements View.OnClickListene
         return view;
     }
 
-    private void choseImage()
-    {
-        try{
+    private void choseImage() {
+        try {
             Intent intent = new Intent();
             intent.setType("image/*");
             intent.setAction(intent.ACTION_GET_CONTENT);
-            startActivityForResult(intent,PICK_IMAGE_REQUEST);
-        }catch (Exception e)
-        {
-            Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT ).show();
+            startActivityForResult(intent, PICK_IMAGE_REQUEST);
+        } catch (Exception e) {
+            Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
+    /*public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
         try {
             super.onActivityResult(requestCode, resultCode, data);
 
@@ -255,10 +280,10 @@ public class AddProductsFragment extends Fragment implements View.OnClickListene
             Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT ).show();
         }
 
-    }
+    }*/
 
-    @Override
-    public void onClick(View view) {
+
+    public void choseImagee(View view) {
         switch (view.getId()) {
             case R.id.product_image:
                 new MaterialDialog.Builder(getActivity())
@@ -286,29 +311,111 @@ public class AddProductsFragment extends Fragment implements View.OnClickListene
                         .show();
                 break;
         }
-    }
+        }
 
-    public void onRequestPermissopnsResult(int requestCode, String[] permission , int grantResult[])
-    {
-        if(requestCode==0)
-        {
-            if(grantResult.length > 0 && grantResult[0] == PackageManager.PERMISSION_GRANTED
-                && grantResult[1] == PackageManager.PERMISSION_GRANTED )
-            {
+    public void onRequestPermissopnsResult(int requestCode, String[] permission, int grantResult[]) {
+        if (requestCode == 0) {
+            if (grantResult.length > 0 && grantResult[0] == PackageManager.PERMISSION_GRANTED
+                    && grantResult[1] == PackageManager.PERMISSION_GRANTED) {
                 productImage.setEnabled(true);
             }
         }
     }
 
-    public void setProgressBar()
-    {
+    public void setProgressBar() {
         progressBar = new ProgressDialog(getActivity());
         progressBar.setCancelable(true);
         progressBar.setMessage("Please wait");
         progressBar.setProgress(0);
         progressBar.setMax(100);
         progressBar.show();
-        progressBarStatus=0;
+        progressBarStatus = 0;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (progressBarStatus < 100) {
+                    progressBarStatus += 30;
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    progressBarbHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setProgress(progressBarStatus);
+                        }
+                    });
+                }
+                if (progressBarStatus >= 100) {
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    progressBar.dismiss();
+                }
+            }
+        }).start();
     }
+
+    public static Context getContextOfApplication() {
+        return contextOfApplication;
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Context applicationContext = AddProductsFragment.getContextOfApplication();
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SELECT_PHOTO) {
+
+                try {
+                    final Uri imageUri = data.getData();
+                    final InputStream imageStream = applicationContext.getContentResolver().openInputStream(imageUri);
+                    final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                    setProgressBar();
+                    productImage.setImageBitmap(selectedImage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            } else if (requestCode == CAPTURE_PHOTO) {
+
+                    onCaptureImageResult(data);
+
+
+            }
+        }
+
+
+
+
+
+    public boolean actionsort() {
+        Intent intent = new Intent(AddProductsFragment.this.getActivity(), DetailsActivity.class);
+        startActivity(intent);
+        return true;
+    }
+
+    private void onCaptureImageResult(Intent data) {
+        thumbnail = (Bitmap) data.getExtras().get("data");
+        //set Progress Bar
+        setProgressBar();
+        //set product picture form camera
+        productImage.setMaxWidth(400);
+        productImage.setImageBitmap(thumbnail);
+
+    }
+
+    public void addToDb(View view){
+        productImage.setDrawingCacheEnabled(true);
+        productImage.buildDrawingCache();
+        Bitmap bitmap = productImage.getDrawingCache();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress (Bitmap.CompressFormat.JPEG, 80, baos);
+        byte[] data = baos.toByteArray();
+        dbHelper.addToDb(data);
+        Toast.makeText(getActivity(), "Image saved to DB successfully", Toast.LENGTH_SHORT).show();
+    }
+
 
 }
