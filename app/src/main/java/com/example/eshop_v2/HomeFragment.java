@@ -91,7 +91,7 @@ public class HomeFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         list = dao.getProducts();
-        adapter = new RecyclerAdapter(list);
+        adapter = new RecyclerAdapter(list, getContext());
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
 
