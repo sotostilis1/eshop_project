@@ -73,9 +73,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         ImageView img;
 
 
-        private int number = 0;
-
-
+//
 
         public MyViewHolder(View itemView) {
             super(itemView);
