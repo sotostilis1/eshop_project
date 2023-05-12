@@ -1,5 +1,11 @@
 package com.example.eshop_v2;
 
+import static android.provider.UserDictionary.Words._ID;
+
+import android.content.Context;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +19,10 @@ import java.util.List;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder> {
     private List<products> list;
-    public RecyclerAdapter(List<products> list){
+    private Cursor mCursor;
+    public RecyclerAdapter(List<products> list , Cursor cursor){
         this.list = list;
+        this.mCursor = cursor;
     }
 
     @Override
@@ -34,13 +42,43 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         double price = Products.getPrice();
 
 
-
-
         holder.TextViewName.setText(name);
         holder.TextViewQty.setText(String.valueOf(Qty));
         holder.TextViewPrice.setText(String.valueOf(price));
 
+        // Indices for the _id, description, and priority columns
+        int idIndex = mCursor.getColumnIndex(_ID);
+        int fragranceName = mCursor.getColumnIndex(DbHelper.COLUMN_NAME);
 
+
+
+        mCursor.moveToPosition(position); // get to the right location in the cursor
+
+        // Determine the values of the wanted data
+        final int id = mCursor.getInt(idIndex);
+        byte[] image = mCursor.getBlob(fragranceName);
+
+        //Set values
+        holder.itemView.setTag(id);
+
+        Bitmap bmp = BitmapFactory.decodeByteArray(image, 0, image.length);
+        holder.image.setImageBitmap(bmp);
+
+    }
+
+    public Cursor swapCursor(Cursor c) {
+        // check if this cursor is the same as the previous cursor (mCursor)
+        if (mCursor == c) {
+            return null; // bc nothing has changed
+        }
+        Cursor temp = mCursor;
+        this.mCursor = c; // new cursor value assigned
+
+        //check if this is a valid cursor, then update the cursor
+        if (c != null) {
+            this.notifyDataSetChanged();
+        }
+        return temp;
     }
 
     @Override
@@ -52,12 +90,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         TextView TextViewName;
         TextView TextViewQty;
         TextView TextViewPrice;
+        ImageView image;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             TextViewName = itemView.findViewById(R.id.txtview_name);
             TextViewQty = itemView.findViewById(R.id.txtview_quantity);
             TextViewPrice = itemView.findViewById(R.id.txtview_price);
+            image = (ImageView) itemView.findViewById(R.id.picture);
 
         }
     }

@@ -1,7 +1,10 @@
 package com.example.eshop_v2;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +26,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private List<products> list;
     private RecyclerAdapter adapter;
+    private Context context;
 
     productsDAO dao = MainActivity.productsDatabase.productsDAOtemp();
 
@@ -37,6 +41,12 @@ public class HomeFragment extends Fragment {
 
     public HomeFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        this.context = context;
     }
 
     /**
@@ -79,7 +89,9 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         list = dao.getProducts();
-        adapter = new RecyclerAdapter(list);
+        DbHelper dbHelper = new DbHelper(context);
+        Cursor cursor = dbHelper.getAllData();
+        adapter = new RecyclerAdapter(list,cursor);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
         return view;

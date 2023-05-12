@@ -1,5 +1,7 @@
 package com.example.eshop_v2;
 
+import static android.provider.UserDictionary.Words._ID;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -33,7 +35,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImagesView
     @Override
     public ImagesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        View view = inflater.inflate(R.layout.image_item, parent, false);
+        View view = inflater.inflate(R.layout.item_main, parent, false);
         return new ImagesViewHolder(view);
     }
 
@@ -42,7 +44,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImagesView
     public void onBindViewHolder(ImagesViewHolder holder, int position) {
 
         // Indices for the _id, description, and priority columns
-        //int idIndex = mCursor.getColumnIndex(_ID);
+        int idIndex = mCursor.getColumnIndex(_ID);
         int fragranceName = mCursor.getColumnIndex(DbHelper.COLUMN_NAME);
 
 
@@ -50,11 +52,11 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImagesView
         mCursor.moveToPosition(position); // get to the right location in the cursor
 
         // Determine the values of the wanted data
-        // final int id = mCursor.getInt(idIndex);
+        final int id = mCursor.getInt(idIndex);
         byte[] image = mCursor.getBlob(fragranceName);
 
         //Set values
-        // holder.itemView.setTag(id);
+        holder.itemView.setTag(id);
 
         Bitmap bmp = BitmapFactory.decodeByteArray(image, 0, image.length);
         holder.image.setImageBitmap(Bitmap.createScaledBitmap(bmp, 200,

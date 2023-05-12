@@ -10,7 +10,7 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="windowActionBar">false</item>
+
 
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
@@ -19,7 +19,7 @@
     <style name="CustomTheme" parent="Theme.MaterialComponents.NoActionBar">
         <item name="colorPrimary">@color/purple_500</item>
         <item name="toolbarStyle">@style/ToolbarTheme</item>
-        <item name="windowActionBar">false</item>
+
 
     </style>
     

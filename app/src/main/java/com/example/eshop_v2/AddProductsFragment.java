@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -217,6 +218,13 @@ public class  AddProductsFragment extends Fragment {
                     prods.setPrice(Var_productprice);
                     prods.setDescription(Var_productdesc);
                     prods.setQuantity(Var_productquantity);
+                    productImage.setDrawingCacheEnabled(true);
+                    productImage.buildDrawingCache();
+                    Bitmap bitmap = productImage.getDrawingCache();
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress (Bitmap.CompressFormat.JPEG, 80, baos);
+                    byte[] data = baos.toByteArray();
+                    dbHelper.addToDb(data);
 
                     MainActivity.productsDatabase.productsDAOtemp().addProducts(prods);
 
@@ -243,6 +251,8 @@ public class  AddProductsFragment extends Fragment {
                     Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
                 }
                 Toast.makeText(getActivity(), "product added", Toast.LENGTH_LONG).show();
+
+                Toast.makeText(getActivity(), "Image saved to DB successfully", Toast.LENGTH_SHORT).show();
                 EdtTxt1.setText("");
                 EdtTxt2.setText("");
                 EdtTxt3.setText("");
@@ -369,11 +379,10 @@ public class  AddProductsFragment extends Fragment {
         if (requestCode == SELECT_PHOTO) {
 
                 try {
-                    final Uri imageUri = data.getData();
-                    final InputStream imageStream = applicationContext.getContentResolver().openInputStream(imageUri);
-                    final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                    imagePath = data.getData();
+                    imageToStore = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),imagePath);
                     setProgressBar();
-                    productImage.setImageBitmap(selectedImage);
+                    productImage.setImageBitmap(imageToStore);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -392,6 +401,11 @@ public class  AddProductsFragment extends Fragment {
 
     public boolean actionsort() {
         Intent intent = new Intent(AddProductsFragment.this.getActivity(), DetailsActivity.class);
+        // Create an instance of the DbHelper class
+        DbHelper dbHelper = new DbHelper(getContext());
+
+        // Call the deleteTable method on the dbHelper instance
+        dbHelper.deleteTable();
         startActivity(intent);
         return true;
     }
