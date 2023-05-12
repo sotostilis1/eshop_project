@@ -3,9 +3,11 @@ package com.example.eshop_v2;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SingleProductActivity extends AppCompatActivity {
 
@@ -19,6 +21,8 @@ public class SingleProductActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_product_activity);
+
+
 
         prod_name = findViewById(R.id.single_product_name);
         prod_pic = findViewById(R.id.single_img);
@@ -36,6 +40,49 @@ public class SingleProductActivity extends AppCompatActivity {
         prod_desc.setText(getIntent().getStringExtra("txtview_description"));
 
 
+        btn_minus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int number = 0;
+
+                String text = prod_wanted_qty.getText().toString();
+
+                number = Integer.parseInt(text);
+                number--;
+                if  (number>=1){
+                    prod_wanted_qty.setText(String.valueOf(number)); }
+                else {
+                    number++;
+                    prod_wanted_qty.setText(String.valueOf(number));
+                    Toast.makeText(getApplicationContext(), "quantity should be >=1", Toast.LENGTH_SHORT).show();
+                }
+
+
+
+            }
+        });
+
+
+        btn_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int number = 0;
+
+                String text = prod_wanted_qty.getText().toString();
+
+                    number = Integer.parseInt(text);
+                    number++;
+                    if  (number<= Integer.parseInt(prod_quantity.getText().toString())){
+                    prod_wanted_qty.setText(String.valueOf(number)); }
+                    else {
+                        number--;
+                        prod_wanted_qty.setText(String.valueOf(number));
+                        Toast.makeText(getApplicationContext(), "you can't buy more than we have to offer", Toast.LENGTH_SHORT).show();
+                    }
+
+
+            }
+        });
 
 
     }

@@ -73,7 +73,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         ImageView img;
 
 
-//
+
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -84,37 +84,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             img = itemView.findViewById(R.id.picture);
 
 
-            /*btn1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Handle button1 click event
-                    int position = getAdapterPosition(); // Get the item position
-                    String text = Txtview.getText().toString();
-                    try {
-                         number = Integer.parseInt(text);
-                        number--;
-                    } catch (NumberFormatException e) {
-                        // Handle the case where the text is not a valid integer
-                    }
 
-                }
-            });
 
-            btn2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Handle button1 click event
-                    int position = getAdapterPosition(); // Get the item position
-                    String text = Txtview.getText().toString();
-                    try {
-                        number = Integer.parseInt(text);
-                        number++;
-                    } catch (NumberFormatException e) {
-                        // Handle the case where the text is not a valid integer
-                    }
-
-                }
-            });*/
 
         }
     }
