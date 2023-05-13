@@ -22,6 +22,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     }
 
 
+    @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.text_view_layout, parent,false);
@@ -34,10 +35,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
         products Products =  list.get(position);
 
+        int id = Products.getId();
         String name = Products.getName();
         int Qty = Products.getQuantity();
         double price = Products.getPrice();
         String desc = Products.getDescription();
+
 
 
         holder.TextViewDesc.setText(desc);
@@ -54,6 +57,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                 intent.putExtra("txtview_price", Products.getPrice());
                 intent.putExtra("txtview_quantity", Products.getQuantity());
                 intent.putExtra("txtview_description", Products.getDescription());
+                intent.putExtra("single_product_id", Products.getId());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
 
@@ -69,7 +73,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView TextViewName, TextViewQty, TextViewPrice, TextViewDesc;
+        TextView TextViewName, TextViewQty, TextViewPrice, TextViewDesc, TextViewId;
         ImageView img;
 
 
@@ -82,6 +86,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             TextViewPrice = itemView.findViewById(R.id.txtview_price);
             TextViewDesc = itemView.findViewById(R.id.txtview_description);
             img = itemView.findViewById(R.id.picture);
+            TextViewId = itemView.findViewById(R.id.single_product_id);
 
 
 

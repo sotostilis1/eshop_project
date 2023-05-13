@@ -52,6 +52,16 @@ public interface productsDAO {
     public List<supplies> getSupplies();
 
 
+    @Insert
+    public void addCart (cart cart);
+
+    @Delete
+    public void deleteCart (cart cart);
+
+    @Query("select * from cart")
+    public List<cart> getCart();
+
+
 
 
 }

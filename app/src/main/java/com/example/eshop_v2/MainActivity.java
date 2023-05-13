@@ -15,6 +15,7 @@ import androidx.room.Room;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -77,6 +78,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle menu item clicks here
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_cart) {
+            showFragment(new CartFragment());
+            return true;
+        } else if (itemId == R.id.action_search) {
+            // Handle menu item 2 click
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

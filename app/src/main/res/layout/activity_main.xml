@@ -18,6 +18,7 @@
                     android:layout_height="?attr/actionBarSize"
                     android:background="@color/colorPrimaryDark"
                     android:elevation="3dp"
+
                     android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
                     app:layout_constraintTop_toTopOf="parent"
                     app:title="@string/app_name" />
