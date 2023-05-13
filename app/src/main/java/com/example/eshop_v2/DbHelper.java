@@ -51,7 +51,7 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         final String SQL_CREATE_IMAGE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-                _ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                _ID + " INTEGER ," +
                 COLUMN_NAME + " BLOB NOT NULL " + " );";
 
         db.execSQL(SQL_CREATE_IMAGE_TABLE);
@@ -60,11 +60,14 @@ public class DbHelper extends SQLiteOpenHelper {
 
     }
 
-    public void addToDb(byte[] image){
+    public void addToDb(int productId, byte[] image){
         ContentValues cv = new  ContentValues();
+        cv.put(_ID, productId);
         cv.put(COLUMN_NAME,   image);
         db.insert( TABLE_NAME, null, cv );
+        Log.d(TAG, "SELECT * FROM " + TABLE_NAME + " WHERE " + _ID + " = " + productId );
     }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -72,10 +75,11 @@ public class DbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public Cursor getAllData() {
+    public Cursor getAllData(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor res = db.rawQuery("select * from " + TABLE_NAME, null);
-        return res;
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + _ID + " = " + id, null);
+        Log.d(TAG,_ID + " = " + id);
+        return cursor;
     }
 
     public void deleteTable() {
@@ -84,5 +88,10 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
 
+    public Cursor getAllData() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME , null);
+        return cursor;
+    }
 }
 

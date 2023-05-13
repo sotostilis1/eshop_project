@@ -13,6 +13,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+
 import java.util.List;
 
 /**
@@ -21,6 +31,8 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
+
+
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -87,13 +99,14 @@ public class HomeFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerview);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-
         list = dao.getProducts();
         DbHelper dbHelper = new DbHelper(context);
+        products prod = new products();
         Cursor cursor = dbHelper.getAllData();
-        adapter = new RecyclerAdapter(list,cursor);
+        adapter = new RecyclerAdapter(list, cursor,context);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
+
         return view;
     }
 }

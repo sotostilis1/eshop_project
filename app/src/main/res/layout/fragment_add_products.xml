@@ -87,7 +87,24 @@
         android:layout_width="match_parent"
         android:layout_height="109dp"
         app:srcCompat="@drawable/ic_add" />
+    <Button
+        android:id="@+id/add"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary"
+        android:text="ADD TO DB"
+        android:textColor="#FFF"
+        android:textSize="16dp"
+        app:layout_constraintTop_toTopOf="@+id/product_image"/>
 
+    <ImageButton
+        android:id="@+id/action_sort"
+        android:layout_width="377dp"
+        android:layout_height="50dp"
+        android:contentDescription="TODO"
+        android:title="Picturs"
+        app:showAsAction="ifRoom"
+        app:srcCompat="@drawable/ic_cart" />
 
     <Button
         android:id="@+id/add"
