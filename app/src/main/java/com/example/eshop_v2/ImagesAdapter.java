@@ -45,7 +45,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImagesView
 
         // Indices for the _id, description, and priority columns
         int idIndex = mCursor.getColumnIndex(_ID);
-        int fragranceName = mCursor.getColumnIndex(DbHelper.COLUMN_NAME);
+        int fragranceName = mCursor.getColumnIndex(DbHelper.COLUMN_IMAGE);
 
 
 

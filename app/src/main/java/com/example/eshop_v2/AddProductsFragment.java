@@ -225,7 +225,7 @@ public class AddProductsFragment extends Fragment {
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     bitmap.compress (Bitmap.CompressFormat.JPEG, 80, baos);
                     byte[] data = baos.toByteArray();
-                    dbHelper.addToDb(Var_productid,data);
+                    dbHelper.addToDb(Var_productid,data,Var_productname);
 
                     MainActivity.productsDatabase.productsDAOtemp().addProducts(prods);
 

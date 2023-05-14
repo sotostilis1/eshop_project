@@ -53,7 +53,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         // Define a projection that specifies the columns from the table we care about.
         String[] projection = {
-                DbHelper.COLUMN_NAME,
+                DbHelper.COLUMN_IMAGE,
         };
 
         // This loader will execute the ContentProvider's query method on a background thread

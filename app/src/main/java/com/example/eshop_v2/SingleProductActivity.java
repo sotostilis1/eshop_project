@@ -18,6 +18,7 @@ public class SingleProductActivity extends AppCompatActivity {
 
     private DbHelper dbHelper;
     private int position;
+    private String name;
 
 
     Button btn_minus , btn_add, btn_add_to_cart;
@@ -36,7 +37,8 @@ public class SingleProductActivity extends AppCompatActivity {
         dbHelper = new DbHelper(this);
         products prods = new products();
         int productId = getIntent().getIntExtra("product_id", 0);
-        position = getIntent().getIntExtra("product_id", productId+1);
+        position = getIntent().getIntExtra("product_id", productId-1);
+        name = getIntent().getStringExtra("single_product_name");
 
 
         prod_name = findViewById(R.id.single_product_name);
@@ -57,9 +59,10 @@ public class SingleProductActivity extends AppCompatActivity {
 
         ViewHolder holder = new ViewHolder();
         holder.img = prod_pic;
-        Cursor cursor = dbHelper.getAllData(position);
+        Cursor cursor = dbHelper.getAllData(position,name);
         if (cursor.moveToFirst()) {
-                int fragranceName = cursor.getColumnIndex(DbHelper.COLUMN_NAME);
+                cursor.moveToFirst();
+                int fragranceName = cursor.getColumnIndex(DbHelper.COLUMN_IMAGE);
                 byte[] image = cursor.getBlob(fragranceName);
                 Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
                 holder.img.setImageBitmap(bitmap);
