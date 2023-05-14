@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +23,15 @@ public class CartRecyclerAdapter extends RecyclerView.Adapter<CartRecyclerAdapte
         this.list = list;
         this.context = context;
     }
+    public void deleteItem(int position) {
+        // Remove the item from your data source
+        list.remove(position);
+
+        // Notify the adapter that an item has been removed at the specified position
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, getItemCount());
+    }
+
 
 
 
@@ -52,6 +62,22 @@ public class CartRecyclerAdapter extends RecyclerView.Adapter<CartRecyclerAdapte
         holder.qty.setText(String.valueOf(Qty));
         holder.price.setText(String.valueOf(price));
 
+
+        holder.cancel_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cart Cart = new cart();
+                Cart.setId(id);
+                MainActivity.productsDatabase.productsDAOtemp().deleteCart(Cart);
+
+                int clickedPosition = holder.getAdapterPosition();
+                
+                deleteItem(clickedPosition);
+
+
+            }
+        });
+
     }
 
 
@@ -74,12 +100,6 @@ public class CartRecyclerAdapter extends RecyclerView.Adapter<CartRecyclerAdapte
             finalprice = itemView.findViewById(R.id.cartview_final_price);
             id = itemView.findViewById(R.id.cartview_id);
             cancel_btn = itemView.findViewById(R.id.cancel);
-
-
-
-
-
-
 
         }
     }
