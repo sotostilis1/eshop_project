@@ -7,9 +7,12 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.lights.LightState;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,6 +26,7 @@ import androidx.fragment.app.FragmentManager;
 
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -42,6 +46,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -71,6 +76,9 @@ public class AddProductsFragment extends Fragment {
     Bitmap thumbnail;
 
     ImageButton actionsort;
+    // Use your own tag for the fragment:
+    private static final String TAG = "AddProductsFragment";
+
 
     public static Context contextOfApplication;
 
@@ -135,17 +143,20 @@ public class AddProductsFragment extends Fragment {
         Btn_picture = view.findViewById(R.id.btn_picture);
         productImage = view.findViewById(R.id.product_image);
         actionsort = view.findViewById(R.id.action_sort);
-        //vagg
 
         int permissionCheckStorage = ContextCompat.checkSelfPermission(getActivity(),
                 android.Manifest.permission.CAMERA);
-        if (permissionCheckStorage == PackageManager.PERMISSION_DENIED) {
-            productImage.setEnabled(false);
-            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            productImage.setEnabled(true);
+            ActivityCompat.requestPermissions(getActivity(), new String[] { Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
         } else {
             productImage.setEnabled(true);
         }
         dbHelper = new DbHelper(getActivity());
+
+
+
+
 
 
 
@@ -159,6 +170,7 @@ public class AddProductsFragment extends Fragment {
         });
 
         productImage.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 choseImagee(view);
@@ -211,6 +223,7 @@ public class AddProductsFragment extends Fragment {
 
 
 
+                byte[] data = null;
                 try {
                     products prods = new products();
                     prods.setId(Var_productid);
@@ -219,15 +232,19 @@ public class AddProductsFragment extends Fragment {
                     prods.setDescription(Var_productdesc);
                     prods.setQuantity(Var_productquantity);
 
-                    productImage.setDrawingCacheEnabled(true);
+
                     productImage.buildDrawingCache();
                     Bitmap bitmap = productImage.getDrawingCache();
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    bitmap.compress (Bitmap.CompressFormat.JPEG, 80, baos);
-                    byte[] data = baos.toByteArray();
+                    bitmap.compress (Bitmap.CompressFormat.JPEG, 100, baos);
+                    data = baos.toByteArray();
                     dbHelper.addToDb(Var_productid,data,Var_productname);
+                    Log.d(TAG, Var_productid+String.valueOf(data)+Var_productname);
+                    //set Progress Bar
+                    //setProgressBar();
 
                     MainActivity.productsDatabase.productsDAOtemp().addProducts(prods);
+
 
 //                    GIA TIN FIREBASE
 //                    MainActivity.db.
@@ -253,11 +270,13 @@ public class AddProductsFragment extends Fragment {
                 }
                 Toast.makeText(getActivity(),"product added",Toast.LENGTH_LONG).show();
                 productImage.setImageResource(R.drawable.ic_add);
+
                 EdtTxt1.setText("");
                 EdtTxt2.setText("");
                 EdtTxt3.setText("");
                 EdtTxt4.setText("");
                 EdtTxt5.setText("");
+                MainActivity.fragmentManager.beginTransaction().replace(R.id.fragment_container, new AddProductsFragment()).addToBackStack(null).commit();
 
             }
         });
@@ -266,6 +285,7 @@ public class AddProductsFragment extends Fragment {
     }
 
     public void choseImagee(View view) {
+
         switch (view.getId()) {
             case R.id.product_image:
                 new MaterialDialog.Builder(getActivity())
@@ -295,14 +315,7 @@ public class AddProductsFragment extends Fragment {
         }
     }
 
-    public void onRequestPermissopnsResult(int requestCode, String[] permission, int grantResult[]) {
-        if (requestCode == 0) {
-            if (grantResult.length > 0 && grantResult[0] == PackageManager.PERMISSION_GRANTED
-                    && grantResult[1] == PackageManager.PERMISSION_GRANTED) {
-                productImage.setEnabled(true);
-            }
-        }
-    }
+
 
     public void setProgressBar() {
         progressBar = new ProgressDialog(getActivity());
@@ -351,10 +364,12 @@ public class AddProductsFragment extends Fragment {
         if (requestCode == SELECT_PHOTO) {
 
             try {
-                imagePath = data.getData();
-                imageToStore = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),imagePath);
-                setProgressBar();
-                productImage.setImageBitmap(imageToStore);
+                final Uri imageUri = data.getData();
+                final InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
+                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+
+                //set profile picture form gallery
+                productImage.setImageBitmap(selectedImage);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -383,8 +398,6 @@ public class AddProductsFragment extends Fragment {
 
     private void onCaptureImageResult(Intent data) {
         thumbnail = (Bitmap) data.getExtras().get("data");
-        //set Progress Bar
-        setProgressBar();
         //set product picture form camera
         productImage.setMaxWidth(400);
         productImage.setImageBitmap(thumbnail);

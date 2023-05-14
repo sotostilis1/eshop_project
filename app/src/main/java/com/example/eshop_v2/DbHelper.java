@@ -34,7 +34,7 @@ public class DbHelper extends SQLiteOpenHelper {
     SQLiteDatabase db;
     ContentResolver mContentResolver;
 
-    final static String COLUMN_IMAGE = "image";
+    public final static String COLUMN_IMAGE = "image";
     public static final String COLUMN_NAME = "imagename";
     public final static String TABLE_NAME = "imagetable";
     public static final String COLUMN_ID = "_id";
@@ -69,7 +69,7 @@ public class DbHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_NAME, productName);
         cv.put(COLUMN_IMAGE,   image);
         db.insert( TABLE_NAME, null, cv );
-        Log.d(TAG, "SELECT * FROM " + TABLE_NAME + " WHERE " + _ID + " = " + productId + " AND " + COLUMN_NAME + " = '" + productName + " AND " +COLUMN_IMAGE + "=" + image );
+        Log.d(TAG, "SELECT * FROM " + TABLE_NAME + " WHERE " + _ID + " = " + productId + " AND " + COLUMN_NAME + " = " + productName + " AND " +COLUMN_IMAGE + "=" + image );
     }
 
 
@@ -81,7 +81,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public Cursor getAllData(int id , String name) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + _ID + " = " + id + " AND " + COLUMN_NAME + " = " + name , null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + _ID + " = " + id + " AND " + COLUMN_NAME + " = '" + name + "'" , null);
         Log.d(TAG,_ID + " = " + id+" AND " + COLUMN_NAME + " = '" + name);
         return cursor;
     }
