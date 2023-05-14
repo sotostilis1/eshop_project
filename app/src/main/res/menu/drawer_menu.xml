@@ -75,6 +75,9 @@
                 <item
                     android:id="@+id/del_customer"
                     android:title="Delete Customer" />
+                <item
+                    android:id="@+id/query_cart"
+                    android:title="Query cart" />
 
             </group>
         </menu>

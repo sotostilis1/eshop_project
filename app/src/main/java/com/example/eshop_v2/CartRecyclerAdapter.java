@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,26 +46,11 @@ public class CartRecyclerAdapter extends RecyclerView.Adapter<CartRecyclerAdapte
         double finalprice = cart.getFinalPrice();
 
 
-        holder.id.setText(id);
+        holder.id.setText(String.valueOf(id));
         holder.finalprice.setText(String.valueOf(finalprice));
         holder.name.setText(name);
         holder.qty.setText(String.valueOf(Qty));
         holder.price.setText(String.valueOf(price));
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, CartFragment.class);
-                intent.putExtra("cartview_name", cart.getName());
-                intent.putExtra("cartview_price", cart.getPrice());
-                intent.putExtra("cartview_quantity", cart.getQty());
-                intent.putExtra("cartview_id", cart.getId());
-                intent.putExtra("cartview_final_price", cart.getFinalPrice());
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-
-            }
-        });
 
     }
 
@@ -72,11 +58,12 @@ public class CartRecyclerAdapter extends RecyclerView.Adapter<CartRecyclerAdapte
 
     @Override
     public int getItemCount() {
-        return 0;
+        return list.size();
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView name, qty, price, finalprice, id;
+        Button cancel_btn;
 
 
         public MyViewHolder(View itemView) {
@@ -86,6 +73,7 @@ public class CartRecyclerAdapter extends RecyclerView.Adapter<CartRecyclerAdapte
             price = itemView.findViewById(R.id.cartview_price);
             finalprice = itemView.findViewById(R.id.cartview_final_price);
             id = itemView.findViewById(R.id.cartview_id);
+            cancel_btn = itemView.findViewById(R.id.cancel);
 
 
 

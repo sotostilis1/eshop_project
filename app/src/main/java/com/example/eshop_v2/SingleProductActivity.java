@@ -116,14 +116,14 @@ public class SingleProductActivity extends AppCompatActivity {
                     }
 
 
-                    cart cart = new cart();
-                    cart.setId(id);
-                    cart.setName(name);
-                    cart.setPrice(price);
-                    cart.setFinalPrice(finalPrice);
-                    cart.setQty(qty);
+                    cart Cart = new cart();
+                    Cart.setId(id);
+                    Cart.setName(name);
+                    Cart.setPrice(price);
+                    Cart.setFinalPrice(finalPrice);
+                    Cart.setQty(qty);
 
-                    MainActivity.productsDatabase.productsDAOtemp().addCart(cart);
+                    MainActivity.productsDatabase.productsDAOtemp().addCart(Cart);
                     Toast.makeText(getApplicationContext(), "product added to cart", Toast.LENGTH_SHORT).show();
 
                     prod_quantity.setText(String.valueOf(quantity));

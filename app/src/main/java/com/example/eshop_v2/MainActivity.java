@@ -136,6 +136,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.del_customer:
                 showFragment(new DeleteCustomerFragment());
                 break;
+            case R.id.query_cart:
+                showFragment(new QueryCartFragment());
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
