@@ -5,6 +5,10 @@ import static com.example.eshop_v2.MainActivity.fragmentManager;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -13,10 +17,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.lights.LightState;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -50,7 +57,6 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 
-
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AddProductsFragment#newInstance} factory method to
@@ -60,8 +66,8 @@ public class AddProductsFragment extends Fragment {
 
     public static FragmentManager fragmentManager;
 
-    EditText EdtTxt1 , EdtTxt2 , EdtTxt3 ,EdtTxt4 ,EdtTxt5;
-    Button Btn_save , Btn_picture;
+    EditText EdtTxt1, EdtTxt2, EdtTxt3, EdtTxt4, EdtTxt5;
+    Button Btn_save, Btn_picture;
 
     TextView txtview;
 
@@ -135,6 +141,19 @@ public class AddProductsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_products, container, false);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("channel_id", "Channel Name", NotificationManager.IMPORTANCE_HIGH);
+            channel.setShowBadge(true);
+            channel.enableVibration(true);
+            channel.enableLights(true);
+            channel.setSound(null, null); // Disable sound for heads-up notification
+            channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC); // Show heads-up notification on the lock screen
+            channel.setVibrationPattern(new long[]{100, 200, 300, 400, 500}); // Set custom vibration pattern
+
+            NotificationManager notificationManager = getContext().getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+
         txtview = view.findViewById(R.id.prod);
         EdtTxt1 = view.findViewById(R.id.edit_text_name);
         EdtTxt2 = view.findViewById(R.id.edit_text_id);
@@ -148,7 +167,7 @@ public class AddProductsFragment extends Fragment {
                 android.Manifest.permission.CAMERA);
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             productImage.setEnabled(true);
-            ActivityCompat.requestPermissions(getActivity(), new String[] { Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
         } else {
             productImage.setEnabled(true);
         }
@@ -160,7 +179,6 @@ public class AddProductsFragment extends Fragment {
                 choseImagee(view);
             }
         });
-
 
 
         Btn_save = view.findViewById(R.id.button_save);
@@ -196,8 +214,7 @@ public class AddProductsFragment extends Fragment {
                     Toast.makeText(getActivity(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(Var_productquantity<=0)
-                {
+                if (Var_productquantity <= 0) {
                     Toast.makeText(getActivity(), "Product Quantity must be more than 0", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -215,16 +232,18 @@ public class AddProductsFragment extends Fragment {
                     productImage.buildDrawingCache();
                     Bitmap bitmap = productImage.getDrawingCache();
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    bitmap.compress (Bitmap.CompressFormat.JPEG, 100, baos);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                     data = baos.toByteArray();
-                    dbHelper.addToDb(Var_productid,data,Var_productname);
-                    Log.d(TAG, Var_productid+String.valueOf(data)+Var_productname);
+                    dbHelper.addToDb(Var_productid, data, Var_productname);
+                    Log.d(TAG, Var_productid + String.valueOf(data) + Var_productname);
                     //set Progress Bar
                     //setProgressBar();
 
                     MainActivity.productsDatabase.productsDAOtemp().addProducts(prods);
 
-                    Toast.makeText(getActivity(),"Product Added!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Product Added!", Toast.LENGTH_LONG).show();
+                    // After adding a product to the database
+                    showHeadsUpNotification();
                     productImage.setImageResource(R.drawable.ic_add);
                     EdtTxt1.setText("");
                     EdtTxt2.setText("");
@@ -252,7 +271,7 @@ public class AddProductsFragment extends Fragment {
                 } catch (Exception e) {
                     String message = e.getMessage();
                     System.out.println(message);
-                    Toast.makeText(getActivity(),message,Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
                 }
 
                 MainActivity.fragmentManager.beginTransaction().replace(R.id.fragment_container, new AddProductsFragment()).addToBackStack(null).commit();
@@ -344,7 +363,7 @@ public class AddProductsFragment extends Fragment {
                 final Uri imageUri = data.getData();
                 final InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                //setProgressBar();
+                setProgressBar();
                 //set profile picture form gallery
                 productImage.setImageBitmap(selectedImage);
             } catch (Exception e) {
@@ -361,10 +380,44 @@ public class AddProductsFragment extends Fragment {
     private void onCaptureImageResult(Intent data) {
         thumbnail = (Bitmap) data.getExtras().get("data");
         //set Progress Bar
-        //setProgressBar();
+        setProgressBar();
         //set product picture form camera
         productImage.setMaxWidth(400);
         productImage.setImageBitmap(thumbnail);
 
+    }
+
+    private void showHeadsUpNotification() {
+        // Create an Intent for the activity to open when the notification is clicked
+        //Intent intent = new Intent(getActivity(), MainActivity.class);
+        //PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent;
+        Intent intent = new Intent(getContext(), AddProductsFragment.class);
+
+
+        pendingIntent = PendingIntent.getActivity(getActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // Build the notification
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getActivity(), "channel_id")
+                .setSmallIcon(R.mipmap.ic_stat_notifications_none)
+                .setContentTitle("Product Added!")
+                .setContentText("Notification Content")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_CALL) // Set category to ensure heads-up behavior
+                .setFullScreenIntent(pendingIntent, true);
+
+
+        // Show the notification
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getActivity());
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        notificationManager.notify(1, builder.build());
     }
 }
