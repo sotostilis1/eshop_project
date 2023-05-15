@@ -3,19 +3,28 @@ package com.example.eshop_v2;
 import static android.app.Activity.RESULT_OK;
 import static com.example.eshop_v2.MainActivity.fragmentManager;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.lights.LightState;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 
+import android.os.Handler;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,17 +33,23 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.List;
 
 import javax.annotation.Nullable;
+
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,11 +66,27 @@ public class AddProductsFragment extends Fragment {
     TextView txtview;
 
 
+    ImageView productImage;
+    private static final int SELECT_PHOTO = 1;
+    private static final int CAPTURE_PHOTO = 2;
+    private ProgressDialog progressBar;
+    private int progressBarStatus = 0;
+    private Handler progressBarbHandler = new Handler();
+    private boolean hastmageChanged = false;
+    DbHelper dbHelper;
+    Bitmap thumbnail;
+
+    ImageButton actionsort;
+    // Use your own tag for the fragment:
+    private static final String TAG = "AddProductsFragment";
+
+
+    public static Context contextOfApplication;
+
     private static final int PICK_IMAGE_REQUEST = 100;
     private Uri imagePath;
     private Bitmap imageToStore;
 
-    ImageView productImage;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -110,33 +141,25 @@ public class AddProductsFragment extends Fragment {
         EdtTxt3 = view.findViewById(R.id.edit_text_description);
         EdtTxt4 = view.findViewById(R.id.edit_text_price);
         EdtTxt5 = view.findViewById(R.id.edit_text_quantity);
-        Btn_picture = view.findViewById(R.id.btn_picture);
         productImage = view.findViewById(R.id.product_image);
         //vagg
+
+        int permissionCheckStorage = ContextCompat.checkSelfPermission(getActivity(),
+                android.Manifest.permission.CAMERA);
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            productImage.setEnabled(true);
+            ActivityCompat.requestPermissions(getActivity(), new String[] { Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
+        } else {
+            productImage.setEnabled(true);
+        }
+        dbHelper = new DbHelper(getActivity());
 
         productImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                choseImage();
+                choseImagee(view);
             }
         });
-
-        Btn_picture.setOnTouchListener(new View.OnTouchListener() {
-
-
-            //GIA EISAGWGH FOTOGRAFIAS (SE PEIRAMATIKO STADIO AKOMA)
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_UP:
-                        MainActivity.fragmentManager.beginTransaction().replace(R.id.fragment_container, new PhotoPickerFragment()).addToBackStack(null).commit();
-
-                        return true;
-                }
-                return false;
-            }
-        });
-
 
 
 
@@ -163,10 +186,24 @@ public class AddProductsFragment extends Fragment {
                     System.out.println("Could not parse " + ex);
                 }
                 String Var_productname = EdtTxt1.getText().toString();
+                String TempVar_productid = EdtTxt2.getText().toString();
                 String Var_productdesc = EdtTxt3.getText().toString();
+                String TempVar_productprice = EdtTxt4.getText().toString();
+                String TempVar_productquantity = EdtTxt5.getText().toString();
+
+                if (Var_productname.isEmpty() || TempVar_productid.isEmpty() ||
+                        Var_productdesc.isEmpty() || TempVar_productprice.isEmpty() || TempVar_productquantity.isEmpty()) {
+                    Toast.makeText(getActivity(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(Var_productquantity<=0)
+                {
+                    Toast.makeText(getActivity(), "Product Quantity must be more than 0", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
 
-
+                byte[] data = null;
                 try {
                     products prods = new products();
                     prods.setId(Var_productid);
@@ -175,7 +212,25 @@ public class AddProductsFragment extends Fragment {
                     prods.setDescription(Var_productdesc);
                     prods.setQuantity(Var_productquantity);
 
+                    productImage.buildDrawingCache();
+                    Bitmap bitmap = productImage.getDrawingCache();
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress (Bitmap.CompressFormat.JPEG, 100, baos);
+                    data = baos.toByteArray();
+                    dbHelper.addToDb(Var_productid,data,Var_productname);
+                    Log.d(TAG, Var_productid+String.valueOf(data)+Var_productname);
+                    //set Progress Bar
+                    //setProgressBar();
+
                     MainActivity.productsDatabase.productsDAOtemp().addProducts(prods);
+
+                    Toast.makeText(getActivity(),"Product Added!",Toast.LENGTH_LONG).show();
+                    productImage.setImageResource(R.drawable.ic_add);
+                    EdtTxt1.setText("");
+                    EdtTxt2.setText("");
+                    EdtTxt3.setText("");
+                    EdtTxt4.setText("");
+                    EdtTxt5.setText("");
 
 //                    GIA TIN FIREBASE
 //                    MainActivity.db.
@@ -199,12 +254,9 @@ public class AddProductsFragment extends Fragment {
                     System.out.println(message);
                     Toast.makeText(getActivity(),message,Toast.LENGTH_LONG).show();
                 }
-                Toast.makeText(getActivity(),"product added",Toast.LENGTH_LONG).show();
-                EdtTxt1.setText("");
-                EdtTxt2.setText("");
-                EdtTxt3.setText("");
-                EdtTxt4.setText("");
-                EdtTxt5.setText("");
+
+                MainActivity.fragmentManager.beginTransaction().replace(R.id.fragment_container, new AddProductsFragment()).addToBackStack(null).commit();
+
 
             }
         });
@@ -212,32 +264,107 @@ public class AddProductsFragment extends Fragment {
         return view;
     }
 
-    private void choseImage()
-    {
-        try{
-            Intent intent = new Intent();
-            intent.setType("image/*");
-            intent.setAction(intent.ACTION_GET_CONTENT);
-            startActivityForResult(intent,PICK_IMAGE_REQUEST);
-        }catch (Exception e)
-        {
-            Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT ).show();
+    public void choseImagee(View view) {
+        switch (view.getId()) {
+            case R.id.product_image:
+                new MaterialDialog.Builder(getActivity())
+                        .title("Set your image")
+                        .items(R.array.uploadImages)
+                        .itemsIds(R.array.itemIds)
+                        .itemsCallback(new MaterialDialog.ListCallback() {
+                            public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                switch (which) {
+                                    case 0:
+                                        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                                        photoPickerIntent.setType("image/*");
+                                        startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+                                        break;
+                                    case 1:
+                                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                        startActivityForResult(intent, CAPTURE_PHOTO);
+                                        break;
+                                    case 2:
+                                        productImage.setImageResource(R.drawable.ic_add);
+                                        break;
+                                }
+                            }
+                        })
+                        .show();
+                break;
         }
     }
 
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
-        try {
-            super.onActivityResult(requestCode, resultCode, data);
-
-            if (resultCode == RESULT_OK && data != null && data.getData() != null) {
-                imagePath = data.getData();
-                imageToStore = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),imagePath);
-                productImage.setImageBitmap(imageToStore);
+    public void setProgressBar() {
+        progressBar = new ProgressDialog(getActivity());
+        progressBar.setCancelable(true);
+        progressBar.setMessage("Please wait");
+        progressBar.setProgress(0);
+        progressBar.setMax(100);
+        progressBar.show();
+        progressBarStatus = 0;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (progressBarStatus < 100) {
+                    progressBarStatus += 30;
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    progressBarbHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setProgress(progressBarStatus);
+                        }
+                    });
+                }
+                if (progressBarStatus >= 100) {
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    progressBar.dismiss();
+                }
             }
-        }catch (Exception e)
-        {
-            Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT ).show();
+        }).start();
+    }
+
+    public static Context getContextOfApplication() {
+        return contextOfApplication;
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Context applicationContext = AddProductsFragment.getContextOfApplication();
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SELECT_PHOTO) {
+
+            try {
+                final Uri imageUri = data.getData();
+                final InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
+                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                //setProgressBar();
+                //set profile picture form gallery
+                productImage.setImageBitmap(selectedImage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else if (requestCode == CAPTURE_PHOTO) {
+
+            onCaptureImageResult(data);
         }
+    }
+
+
+    private void onCaptureImageResult(Intent data) {
+        thumbnail = (Bitmap) data.getExtras().get("data");
+        //set Progress Bar
+        //setProgressBar();
+        //set product picture form camera
+        productImage.setMaxWidth(400);
+        productImage.setImageBitmap(thumbnail);
 
     }
 }

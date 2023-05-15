@@ -1,5 +1,7 @@
 package com.example.eshop_v2;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -36,6 +38,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private List<products> list;
     private RecyclerAdapter adapter;
+    private Context context;
 
     productsDAO dao = MainActivity.productsDatabase.productsDAOtemp();
 
@@ -50,6 +53,11 @@ public class HomeFragment extends Fragment {
 
     public HomeFragment() {
         // Required empty public constructor
+    }
+
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        this.context = context;
     }
 
     /**
@@ -84,14 +92,15 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         recyclerView = view.findViewById(R.id.recyclerview);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         list = dao.getProducts();
-        adapter = new RecyclerAdapter(list, getContext());
+        DbHelper dbHelper = new DbHelper(context);
+        products prod = new products();
+        Cursor cursor = dbHelper.getAllData();
+        adapter = new RecyclerAdapter(list, cursor,context);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
 

@@ -24,12 +24,26 @@ public class CartRecyclerAdapter extends RecyclerView.Adapter<CartRecyclerAdapte
         this.context = context;
     }
     public void deleteItem(int position) {
+        cart deletedCart = list.get(position);
         // Remove the item from your data source
         list.remove(position);
 
         // Notify the adapter that an item has been removed at the specified position
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, getItemCount());
+
+        // Retrieve the product associated with the deleted cart item
+        int productId = deletedCart.getId();
+        products product = MainActivity.productsDatabase.productsDAOtemp().getById(productId);
+
+        // Increment the quantity of the product by the quantity of the deleted cart item
+        int newQuantity = product.getQuantity() + deletedCart.getQty();
+        product.setQuantity(newQuantity);
+
+        // Update the product in the database
+        MainActivity.productsDatabase.productsDAOtemp().updateProducts(product);
+
+        Toast.makeText(context, "Item removed from cart", Toast.LENGTH_SHORT).show();
     }
 
 

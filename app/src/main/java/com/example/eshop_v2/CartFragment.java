@@ -73,6 +73,7 @@ public class CartFragment extends Fragment {
 
         View view =  inflater.inflate(R.layout.fragment_cart, container, false);
 
+
         recyclerView = view.findViewById(R.id.recyclerview2);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
