@@ -1,10 +1,12 @@
 package com.example.eshop_v2;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import android.widget.Toast;
  */
 public class DeleteProductFragment extends Fragment {
 
+    private static final String TAG = "DeleteProductFragment" ;
     public static FragmentManager fragmentManager;
 
     TextView txtview;
@@ -82,10 +85,16 @@ public class DeleteProductFragment extends Fragment {
                 }catch (NumberFormatException ex){
                     System.out.println("Could not parse"+ ex);
                 }
+
+                Context context = getActivity(); // Retrieve the context of the parent activity
+
+                DbHelper dbHelper = new DbHelper(context);
                 products Products = new products();
                 Products.setId(Var_id);
                 MainActivity.productsDatabase.productsDAOtemp().deleteProducts(Products);
-                Toast.makeText(getActivity(),"product deleted",Toast.LENGTH_LONG).show();
+                Log.d(TAG, Var_id + Products.getName());
+                dbHelper.deleteColumn(Var_id);
+                Toast.makeText(getActivity(),"Product Deleted",Toast.LENGTH_LONG).show();
                 Edt_txt1.setText("");
 
 
