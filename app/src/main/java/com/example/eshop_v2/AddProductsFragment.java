@@ -206,16 +206,9 @@ public class AddProductsFragment extends Fragment {
                 String Var_productname = EdtTxt1.getText().toString();
                 String TempVar_productid = EdtTxt2.getText().toString();
                 String Var_productdesc = EdtTxt3.getText().toString();
-                String TempVar_productprice = EdtTxt4.getText().toString();
-                String TempVar_productquantity = EdtTxt5.getText().toString();
 
-                if (Var_productname.isEmpty() || TempVar_productid.isEmpty() ||
-                        Var_productdesc.isEmpty() || TempVar_productprice.isEmpty() || TempVar_productquantity.isEmpty()) {
-                    Toast.makeText(getActivity(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (Var_productquantity <= 0) {
-                    Toast.makeText(getActivity(), "Product Quantity must be more than 0", Toast.LENGTH_SHORT).show();
+                if (TempVar_productid.isEmpty()) {
+                    Toast.makeText(getActivity(), "Please fill the ID field", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
