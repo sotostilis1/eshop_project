@@ -11,24 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimaryDark"
-            android:elevation="3dp"
-
-            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
-            app:layout_constraintTop_toTopOf="parent"
-            app:title="@string/app_name" />
-
         <FrameLayout
             android:id="@+id/fragment_containerr"
             android:layout_width="412dp"
             android:layout_height="630dp"
 
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+            app:layout_constraintStart_toStartOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -231,13 +219,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.navigation.NavigationView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:id="@+id/navigation_view"
-        android:background="@color/white"
-        android:fitsSystemWindows="true"
-        app:menu="@menu/drawer_menu"
-        android:layout_gravity="start"
-        />
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -26,7 +26,7 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
-public class SingleProductActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class SingleProductActivity extends AppCompatActivity {
 
     private static final String TAG = "SingleProductActivity";
     private DbHelper dbHelper;
@@ -46,16 +46,6 @@ public class SingleProductActivity extends AppCompatActivity implements Navigati
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_product_activity);
-                
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        drawerLayout = findViewById(R.id.drawer_layout);
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(drawerToggle);
-        drawerToggle.syncState();
-
-        NavigationView navigationView = findViewById(R.id.navigation_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
         dbHelper = new DbHelper(this);
 
@@ -196,87 +186,5 @@ public class SingleProductActivity extends AppCompatActivity implements Navigati
         });
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        return true;
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle menu item clicks here
-        int itemId = item.getItemId();
-        if (itemId == R.id.action_cart) {
-            showFragment(new CartFragment());
-            return true;
-        } else if (itemId == R.id.action_search) {
-            // Handle menu item 2 click
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-
-        switch (item.getItemId()){
-
-            case R.id.home:
-                showFragment(new HomeFragment());
-                break;
-            case R.id.profile:
-                showFragment(new ProductsFragment());
-                break;
-            case R.id.add_product_option:
-                showFragment(new AddProductsFragment());
-                break;
-            case R.id.drop_product_option:
-                showFragment(new DeleteProductFragment());
-                break;
-            case R.id.edit_product_option:
-                showFragment(new UpdateProductFragment());
-                break;
-            case R.id.suppliers:
-                showFragment(new SuppliersFragment());
-                break;
-            case R.id.add_supp_option:
-                showFragment(new AddSuppliersFragment());
-                break;
-            case R.id.drop_supp_option:
-                showFragment(new DeleteSuppliersFragment());
-                break;
-            case R.id.add_transaction:
-                showFragment(new AddSuppliesFragment());
-                break;
-            case R.id.add_customer:
-                showFragment(new AddCustomerFragment());
-                break;
-            case R.id.del_customer:
-                showFragment(new DeleteCustomerFragment());
-                break;
-            case R.id.query_cart:
-                showFragment(new QueryCartFragment());
-        }
-        drawerLayout.closeDrawer(GravityCompat.START);
-
-        return true;
-    }
-
-    private void showFragment (Fragment fragment)
-    {
-        finish();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_containerr,fragment);
-        ft.commit();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
 
 }
