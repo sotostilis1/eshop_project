@@ -213,7 +213,7 @@ public class AddProductsFragment extends Fragment {
                 }
                 if (Var_productid <= 0 )
                 {
-                    Toast.makeText(getActivity(), "ID must be greater than 0!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "ID must be greater than 0", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
