@@ -97,9 +97,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (itemId == R.id.action_cart) {
             showFragment(new CartFragment());
             return true;
-        } else if (itemId == R.id.action_search) {
-            // Handle menu item 2 click
-            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -144,6 +141,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.query_cart:
                 showFragment(new QueryCartFragment());
+                break;
+            case R.id.view_customers:
+                showFragment(new ViewCustomerFragment());
+                break;
+            case R.id.view_orders:
+                showFragment(new ViewOrderFragment());
+                break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;

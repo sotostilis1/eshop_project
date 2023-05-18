@@ -120,7 +120,7 @@ public class SingleProductActivity extends AppCompatActivity {
                 } else {
                     number--;
                     prod_wanted_qty.setText(String.valueOf(number));
-                    Toast.makeText(getApplicationContext(), "you can't buy more than we have to offer", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "you can't buy more than available quantity", Toast.LENGTH_SHORT).show();
                 }
 
 

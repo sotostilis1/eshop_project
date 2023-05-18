@@ -61,6 +61,11 @@ public interface productsDAO {
     @Query("select * from cart")
     public List<cart> getCart();
 
+    @Query("Delete from cart")
+    void deleteWholeCart();
+
+    @Query("SELECT * FROM cart WHERE product_ID = :id")
+    public cart getByIdd(int id);
 
 
 

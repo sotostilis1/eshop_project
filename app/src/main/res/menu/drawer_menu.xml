@@ -78,6 +78,12 @@
                 <item
                     android:id="@+id/query_cart"
                     android:title="Query cart" />
+                <item
+                    android:id="@+id/view_customers"
+                    android:title="View customers" />
+                <item
+                    android:id="@+id/view_orders"
+                    android:title="View Orders" />
 
             </group>
         </menu>
