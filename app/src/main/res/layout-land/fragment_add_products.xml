@@ -8,11 +8,9 @@
 
 
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:weightSum="2">
 
 
@@ -28,12 +26,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:text="Add new product"
                     android:textColor="@color/black"
-                    android:textSize="30sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -51,17 +51,18 @@
             <EditText
                 android:id="@+id/edit_text_name"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:ems="10"
+                android:layout_height="40dp"
                 android:autofillHints="name"
                 android:hint="@string/product_name"
-                android:inputType="text" />
+                android:inputType="text"
+                />
 
             <EditText
+
                 android:id="@+id/edit_text_id"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:ems="10"
+                android:layout_height="40dp"
+
                 android:autofillHints="id"
                 android:hint="@string/product_id"
                 android:inputType="number" />
@@ -70,8 +71,9 @@
             <EditText
                 android:id="@+id/edit_text_description"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:ems="10"
+                android:layout_height="40dp"
+
+
                 android:autofillHints="description"
                 android:hint="@string/product_description"
                 android:inputType="textMultiLine" />
@@ -79,8 +81,8 @@
             <EditText
                 android:id="@+id/edit_text_price"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:ems="10"
+                android:layout_height="40dp"
+
                 android:autofillHints="price"
                 android:hint="@string/product_price"
                 android:inputType="numberDecimal" />
@@ -88,8 +90,8 @@
             <EditText
                 android:id="@+id/edit_text_quantity"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:ems="10"
+                android:layout_height="40dp"
+
                 android:autofillHints="quantity"
                 android:hint="@string/product_quantity"
                 android:inputType="number" />
@@ -129,11 +131,11 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_right"
-        android:name="com.example.eshop_v2.AddSuppliersFragment"
+        android:name="com.example.eshop_v2.AddSuppliersLandscFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        tools:layout="@layout/fragment_add_suppliers" />
+        tools:layout="@layout/fragment_add_suppliers_landsc" />
 
 </LinearLayout>
 
