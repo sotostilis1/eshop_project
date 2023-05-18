@@ -7,19 +7,23 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
-        android:id="@+id/supp1"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="12dp"
-        android:text="Add suppliers"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/supp1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add new suppliers"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
     <EditText
         android:id="@+id/edit_text_name3"

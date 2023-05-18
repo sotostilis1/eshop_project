@@ -26,6 +26,9 @@
                 <item
                     android:id="@+id/drop_supp_option"
                     android:title="@string/delete_supp" />
+                <item
+                    android:id="@+id/view_suppliers"
+                    android:title="     View suppliers" />
             </group>
         </menu>
     </item>
@@ -58,7 +61,11 @@
             <group>
                 <item
                     android:id="@+id/add_transaction"
-                    android:title="Add transaction" />
+                    android:title="     Add transaction" />
+                <item
+                    android:id="@+id/view_transaction"
+                    android:title="     View transactions" />
+
 
             </group>
         </menu>
@@ -71,20 +78,25 @@
             <group>
                 <item
                     android:id="@+id/add_customer"
-                    android:title="Add Customer" />
+                    android:title="     Add Customer" />
                 <item
                     android:id="@+id/del_customer"
-                    android:title="Delete Customer" />
-                <item
-                    android:id="@+id/query_cart"
-                    android:title="Query cart" />
+                    android:title="     Delete Customer" />
                 <item
                     android:id="@+id/view_customers"
-                    android:title="View customers" />
+                    android:title="     View customers" />
+
+
+            </group>
+        </menu>
+    </item>
+    <item
+        android:title="Orders">
+        <menu>
+            <group>
                 <item
                     android:id="@+id/view_orders"
-                    android:title="View Orders" />
-
+                    android:title="     View Orders" />
             </group>
         </menu>
     </item>

@@ -139,13 +139,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.del_customer:
                 showFragment(new DeleteCustomerFragment());
                 break;
-            case R.id.query_cart:
-                showFragment(new QueryCartFragment());
-                break;
             case R.id.view_customers:
                 showFragment(new ViewCustomerFragment());
                 break;
             case R.id.view_orders:
+                showFragment(new ViewOrderFragment());
+                break;
+            case R.id.view_transaction:
+                showFragment(new ViewOrderFragment());
+                break;
+            case R.id.view_suppliers:
                 showFragment(new ViewOrderFragment());
                 break;
         }
