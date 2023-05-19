@@ -66,14 +66,6 @@
         android:inputType="number" />
 
     <Button
-        android:id="@+id/btn_picture2"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-
-        android:text="@string/product_pic"
-        />
-
-    <Button
         android:id="@+id/button_save2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

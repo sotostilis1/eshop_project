@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">eshop_v2</string>
+    <string name="app_name">MediaShop</string>
     <string name="add_prod">Add Products</string>
     <string name="product_name">Name</string>
     <string name="product_description">Description</string>

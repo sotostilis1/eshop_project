@@ -10,10 +10,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +42,7 @@ public class HomeFragment extends Fragment {
     private List<products> list;
     private RecyclerAdapter adapter;
     private Context context;
+
 
     productsDAO dao = MainActivity.productsDatabase.productsDAOtemp();
 
@@ -99,11 +103,14 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         list = dao.getProducts();
         DbHelper dbHelper = new DbHelper(context);
-        products prod = new products();
+
         Cursor cursor = dbHelper.getAllData();
         adapter = new RecyclerAdapter(list, cursor,context);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
+
+
+
 
         return view;
     }

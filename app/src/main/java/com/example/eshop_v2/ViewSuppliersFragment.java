@@ -1,28 +1,36 @@
 package com.example.eshop_v2;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import com.google.common.base.Suppliers;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link QueryProductFragment#newInstance} factory method to
+ * Use the {@link ViewSuppliersFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class QueryProductFragment extends Fragment {
+public class ViewSuppliersFragment extends Fragment {
 
-    public static FragmentManager fragmentManager;
 
-    TextView txtview;
-    TextView imageview;
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private List<suppliers> list;
+    private ViewSuppliersRecyclerAdapter adapter;
+    private Context context;
+
+    productsDAO dao = MainActivity.productsDatabase.productsDAOtemp();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -33,7 +41,7 @@ public class QueryProductFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public QueryProductFragment() {
+    public ViewSuppliersFragment() {
         // Required empty public constructor
     }
 
@@ -43,11 +51,11 @@ public class QueryProductFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment QueryFragment.
+     * @return A new instance of fragment ViewSuppliersFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static QueryProductFragment newInstance(String param1, String param2) {
-        QueryProductFragment fragment = new QueryProductFragment();
+    public static ViewSuppliersFragment newInstance(String param1, String param2) {
+        ViewSuppliersFragment fragment = new ViewSuppliersFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -67,24 +75,19 @@ public class QueryProductFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_query, container, false);
 
-        txtview = view.findViewById(R.id.textview1);
+        View view =  inflater.inflate(R.layout.fragment_view_suppliers, container, false);
 
-
-                List<products> Products = MainActivity.productsDatabase.productsDAOtemp().getProducts();
-                String result  = "";
-                for(products i: Products) {
-                    String name = i.getName();
-                    String desc = i.getDescription();
-                    int id = i.getId();
-                    double price = i.getPrice();
-                    int quantity = i.getQuantity();
-                    result = result + "\n name: " + name + " \n desc: "+desc+" \n id: "+id+" \n price: "+price+" \n quantity: "+quantity+"\n ";
-                }
-                txtview.setText(result);
+        recyclerView = view.findViewById(R.id.recyclerview10);
+        layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        list = dao.getSuppliers();
 
 
+        adapter = new ViewSuppliersRecyclerAdapter( list, context);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
         return view;
+
     }
 }

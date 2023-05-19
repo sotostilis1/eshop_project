@@ -208,7 +208,7 @@ public class AddProductsFragment extends Fragment {
                 String Var_productdesc = EdtTxt3.getText().toString();
 
                 if (TempVar_productid.isEmpty()) {
-                    Toast.makeText(getActivity(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Please fill in the id", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (Var_productid <= 0 )

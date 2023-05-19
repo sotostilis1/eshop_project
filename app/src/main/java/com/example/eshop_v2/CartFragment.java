@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import java.util.List;
 
@@ -18,6 +19,8 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class CartFragment extends Fragment {
+
+    Button btn1;
 
 
     private RecyclerView recyclerView;
@@ -81,6 +84,14 @@ public class CartFragment extends Fragment {
         adapter = new CartRecyclerAdapter(list, getContext());
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
+
+        btn1 = view.findViewById(R.id.checkout);
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity.fragmentManager.beginTransaction().replace(R.id.fragment_container, new ChooseCustomerFragment()).addToBackStack(null).commit();
+            }
+        });
 
 
 

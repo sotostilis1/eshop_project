@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/filter_item4"
+        android:title="Show all customers" />
+    <item
+        android:id="@+id/filter_item1"
+        android:title="Sort by name (Ascending)" />
+    <item
+        android:id="@+id/filter_item2"
+        android:title="Sort by name (Descending)" />
+    <item
+        android:id="@+id/filter_item5"
+        android:title="Search by ID" />
+
+</menu>

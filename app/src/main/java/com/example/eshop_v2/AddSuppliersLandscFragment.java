@@ -19,13 +19,13 @@ import java.util.List;
  * Use the {@link AddSuppliersFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddSuppliersFragment extends Fragment {
+public class AddSuppliersLandscFragment extends Fragment {
 
 
     EditText EdtTxt1 , EdtTxt2;
-    Button Btn_save , btn_query;
+    Button Btn_save;
 
-    TextView txtview , textview1;
+    TextView txtview;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,7 +36,7 @@ public class AddSuppliersFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public AddSuppliersFragment() {
+    public AddSuppliersLandscFragment() {
         // Required empty public constructor
     }
 
@@ -72,8 +72,8 @@ public class AddSuppliersFragment extends Fragment {
                              Bundle savedInstanceState) {
 
 
-        View view =inflater.inflate(R.layout.fragment_add_suppliers, container, false);
-        textview1 = view.findViewById(R.id.textview3);
+        View view =inflater.inflate(R.layout.fragment_add_suppliers_landsc, container, false);
+
         txtview = view.findViewById(R.id.supp1);
         EdtTxt1 = view.findViewById(R.id.edit_text_name3);
         EdtTxt2 = view.findViewById(R.id.edit_text_id3);

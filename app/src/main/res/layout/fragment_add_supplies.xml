@@ -7,19 +7,23 @@
     android:padding="16dp"
     tools:context=".AddSuppliesFragment">
 
-    <TextView
-        android:id="@+id/trans"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="12dp"
-        android:text="Add transactions"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/trans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add new transaction"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
     <EditText
         android:id="@+id/edit_text_pr_id"
@@ -63,23 +67,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/save" />
-
-    <Button
-        android:id="@+id/button_query4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="query" />
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/textview8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </ScrollView>
-
 
 
 </LinearLayout>

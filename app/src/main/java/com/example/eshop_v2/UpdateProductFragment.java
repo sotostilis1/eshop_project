@@ -26,7 +26,7 @@ public class UpdateProductFragment extends Fragment {
     public static FragmentManager fragmentManager;
 
     EditText EdtTxt1 , EdtTxt2 , EdtTxt3 ,EdtTxt4 ,EdtTxt5;
-    Button Btn_save , Btn_picture;
+    Button Btn_save;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -78,25 +78,6 @@ public class UpdateProductFragment extends Fragment {
         EdtTxt3 = view.findViewById(R.id.edit_text_description2);
         EdtTxt4 = view.findViewById(R.id.edit_text_price2);
         EdtTxt5 = view.findViewById(R.id.edit_text_quantity2);
-        Btn_picture = view.findViewById(R.id.btn_picture2);
-        Btn_picture.setOnTouchListener(new View.OnTouchListener() {
-
-
-            //GIA EISAGWGH FOTOGRAFIAS (SE PEIRAMATIKO STADIO AKOMA)
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_UP:
-                        MainActivity.fragmentManager.beginTransaction().replace(R.id.fragment_container, new PhotoPickerFragment()).addToBackStack(null).commit();
-
-                        return true;
-                }
-                return false;
-            }
-        });
-
-
-
 
         Btn_save = view.findViewById(R.id.button_save2);
         Btn_save.setOnClickListener(new View.OnClickListener() {

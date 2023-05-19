@@ -33,11 +33,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     }
 
 
+
+
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        int orientation = parent.getResources().getConfiguration().orientation;
-        int layoutResId = orientation == Configuration.ORIENTATION_LANDSCAPE ? R.layout.activity_single_product_activity_landscape : R.layout.text_view_layout;
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(layoutResId, parent, false);
+
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.text_view_layout, parent, false);
         return new MyViewHolder(itemView);
     }
 
@@ -79,22 +80,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                    // Landscape mode
-                    TextView singleProductName = holder.itemView.findViewById(R.id.single_product_name);
-                    TextView txtviewPrice = holder.itemView.findViewById(R.id.txtview_price);
-                    TextView txtviewQuantity = holder.itemView.findViewById(R.id.txtview_quantity);
-                    TextView txtviewDescription = holder.itemView.findViewById(R.id.txtview_description);
-                    TextView singleProductId = holder.itemView.findViewById(R.id.single_product_id);
-                    ImageView singleImg = holder.itemView.findViewById(R.id.single_img);
 
-                    singleProductName.setText(name);
-                    txtviewPrice.setText(String.valueOf(price));
-                    txtviewQuantity.setText(String.valueOf(Qty));
-                    txtviewDescription.setText(desc);
-                    singleProductId.setText(String.valueOf(id));
-                    singleImg.setImageBitmap(bmp);
-                } else {
                     // Portrait mode
                     Intent intent = new Intent(context, SingleProductActivity.class);
                     intent.putExtra("single_product_name", Products.getName());
@@ -105,7 +91,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
 
-                }
+
             }
         });
 
@@ -123,22 +109,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            if (itemView.getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                // Landscape mode
-                TextViewName = itemView.findViewById(R.id.txtview_name);
-                TextViewQty = itemView.findViewById(R.id.txtview_quantity);
-                TextViewPrice = itemView.findViewById(R.id.txtview_price_home);
-                TextViewDesc = itemView.findViewById(R.id.txtview_description);
-                img = itemView.findViewById(R.id.picture);
-                TextViewId = itemView.findViewById(R.id.single_product_id);
-            } else {
+
                 TextViewName = itemView.findViewById(R.id.txtview_name);
                 TextViewQty = itemView.findViewById(R.id.txtview_quantity);
                 TextViewPrice = itemView.findViewById(R.id.txtview_price);
                 TextViewDesc = itemView.findViewById(R.id.txtview_description);
                 img = itemView.findViewById(R.id.picture);
                 TextViewId = itemView.findViewById(R.id.single_product_id);
-            }
+
         }
     }
 }

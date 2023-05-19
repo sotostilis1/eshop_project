@@ -26,8 +26,8 @@ public class AddSuppliesFragment extends Fragment {
     public static FragmentManager fragmentManager;
 
     EditText EdtTxt1 , EdtTxt2 , EdtTxt3 ,EdtTxt4;
-    Button Btn_save , btn_query;
-    TextView txtview , txtview1;
+    Button Btn_save;
+    TextView txtview ;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -76,7 +76,7 @@ public class AddSuppliesFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_add_supplies, container, false);
 
         txtview = view.findViewById(R.id.trans);
-        txtview1 = view.findViewById(R.id.textview8);
+
         EdtTxt1 = view.findViewById(R.id.edit_text_pr_id);
         EdtTxt2 = view.findViewById(R.id.edit_text_sup_id);
         EdtTxt3 = view.findViewById(R.id.edit_text_date);
@@ -126,6 +126,7 @@ public class AddSuppliesFragment extends Fragment {
                     prods.setQuantity(i);
 
                     MainActivity.productsDatabase.productsDAOtemp().updateProducts(prods);
+                    Toast.makeText(getActivity(),"transaction completed",Toast.LENGTH_LONG).show();
 
 
                 } catch (Exception e) {
@@ -133,7 +134,7 @@ public class AddSuppliesFragment extends Fragment {
                     System.out.println(message);
                     Toast.makeText(getActivity(),message,Toast.LENGTH_LONG).show();
                 }
-                Toast.makeText(getActivity(),"transaction added",Toast.LENGTH_LONG).show();
+
                 EdtTxt1.setText("");
                 EdtTxt2.setText("");
                 EdtTxt3.setText("");
@@ -141,23 +142,7 @@ public class AddSuppliesFragment extends Fragment {
 
             }
         });
-        btn_query= view.findViewById(R.id.button_query4);
-        btn_query.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                List<supplies> Supplies = MainActivity.productsDatabase.productsDAOtemp().getSupplies();
-                String result  = "";
-                for(supplies i: Supplies) {
-                    int idd = i.getSupplier_id();
-                    String date = i.getDate();
-                    int quan = i.getQnt();
-                    int id = i.getProduct_id();
-                    result = result + "\n date: " + date +" \n product id: "+id+" \n supplier id: "+idd+" \n quantity: "+quan;
-                }
-                txtview1.setText(result);
 
-            }
-        });
 
         return view;
     }

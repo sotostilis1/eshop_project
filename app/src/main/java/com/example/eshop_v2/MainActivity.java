@@ -9,8 +9,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.annotation.SuppressLint;
@@ -20,13 +18,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -75,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if(savedInstanceState!=null){
                 return;
             }
-            fragmentManager.beginTransaction().add(R.id.fragment_container, new CentralFragment()).commit();
+            fragmentManager.beginTransaction().add(R.id.fragment_container, new HomeFragment()).commit();
         }
 
 
@@ -92,13 +86,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle menu item clicks here
         int itemId = item.getItemId();
         if (itemId == R.id.action_cart) {
             showFragment(new CartFragment());
-            return true;
-        } else if (itemId == R.id.action_search) {
-            // Handle menu item 2 click
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -111,9 +101,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()){
             case R.id.home:
                 showFragment(new HomeFragment());
-                break;
-            case R.id.profile:
-                showFragment(new ProductsFragment());
                 break;
             case R.id.add_product_option:
                 showFragment(new AddProductsFragment());
@@ -142,8 +129,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.del_customer:
                 showFragment(new DeleteCustomerFragment());
                 break;
-            case R.id.query_cart:
-                showFragment(new QueryCartFragment());
+            case R.id.view_customers:
+                showFragment(new ViewCustomerFragment());
+                break;
+            case R.id.view_sales:
+                showFragment(new ViewSalesFragment());
+                break;
+            case R.id.view_transaction:
+                showFragment(new ViewTransactionsFragment());
+                break;
+            case R.id.view_suppliers:
+                showFragment(new ViewSuppliersFragment());
+                break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
