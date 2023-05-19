@@ -4,15 +4,15 @@
 
     <item
         android:id="@+id/filter_item2"
-        android:title="Show all products" />
+        android:title="Show all transactions" />
     <item
         android:id="@+id/filter_item3"
-        android:title="Ascending Price" />
+        android:title="Sort by Quantity (Ascending)" />
     <item
         android:id="@+id/filter_item4"
-        android:title="Descending Price" />
+        android:title="Sort by Quantity (Descending)" />
     <item
         android:id="@+id/filter_item1"
-        android:title="Hide out of stock products" />
+        android:title="Hide transactions with certain supplier" />
 
 </menu>

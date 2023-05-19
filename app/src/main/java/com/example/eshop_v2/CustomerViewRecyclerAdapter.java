@@ -25,6 +25,12 @@ public class CustomerViewRecyclerAdapter extends RecyclerView.Adapter<CustomerVi
         this.list = list;
         this.context = context;
     }
+
+    public void updateList(List<Customers> newList) {
+        list = newList;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.PopupMenu;
 
 import androidx.annotation.NonNull;
@@ -16,7 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -37,9 +40,16 @@ public class ViewCustomerFragment extends Fragment {
 
     private Context context;
 
-    Button filter_btn;
+    Button filter_btn , check_btn;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    CollectionReference collectionReference = db.
+            collection("Customers");
+
+    Query query = collectionReference;
+
+    EditText editText;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -94,11 +104,30 @@ public class ViewCustomerFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
 
+        editText = view.findViewById(R.id.search_id);
+        check_btn = view.findViewById(R.id.check_button);
+
+
+        fetchDataFromFirestore(query);
+        check_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int  Var_cid = Integer.parseInt(editText.getText().toString());
+                query = collectionReference.whereEqualTo("cid", Var_cid);
+                fetchDataFromFirestore(query);
+                editText.setVisibility(View.INVISIBLE);
+                check_btn.setVisibility(View.INVISIBLE);
+
+            }
+        });
+
+
+
         filter_btn = view.findViewById(R.id.filter_button1);
         filter_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PopupMenu popupMenu = new PopupMenu(context, view);
+                PopupMenu popupMenu = new PopupMenu(getContext(), view);
                 popupMenu.getMenuInflater().inflate(R.menu.filter_menu_firebase, popupMenu.getMenu());
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
@@ -106,12 +135,24 @@ public class ViewCustomerFragment extends Fragment {
                         // Handle menu item clicks here
                         switch (item.getItemId()) {
                             case R.id.filter_item1:
-                                // Handle filter item 1 click
+                                query = collectionReference.orderBy("cname", Query.Direction.ASCENDING);
+                                fetchDataFromFirestore(query);
                                 break;
                             case R.id.filter_item2:
-                                // Handle filter item 2 click
+                                query = collectionReference.orderBy("cname", Query.Direction.DESCENDING);
+                                fetchDataFromFirestore(query);
                                 break;
-                            // Handle other menu item clicks as needed
+                            case R.id.filter_item4:
+                                query = collectionReference;
+                                fetchDataFromFirestore(query);
+                                break;
+                            case R.id.filter_item5:
+                                editText.setVisibility(View.VISIBLE);
+                                check_btn.setVisibility(View.VISIBLE);
+
+                                break;
+
+
                         }
                         return true;
                     }
@@ -124,14 +165,23 @@ public class ViewCustomerFragment extends Fragment {
 
 
 
-        db.collection("Customers").get()
+
+
+
+
+
+
+        return view;
+    }
+
+    public void fetchDataFromFirestore(Query query) {
+        query.get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot querySnapshot) {
                         List<Customers> customersList = new ArrayList<>();
                         for (QueryDocumentSnapshot documentSnapshot : querySnapshot) {
                             Customers customer = documentSnapshot.toObject(Customers.class);
-
                             customersList.add(customer);
                         }
 
@@ -141,14 +191,8 @@ public class ViewCustomerFragment extends Fragment {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-
+                        // Handle failure
                     }
                 });
-
-
-
-
-
-        return view;
     }
 }

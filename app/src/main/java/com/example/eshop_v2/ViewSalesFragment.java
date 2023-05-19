@@ -21,10 +21,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ViewOrderFragment#newInstance} factory method to
+ * Use the {@link ViewSalesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ViewOrderFragment extends Fragment {
+public class ViewSalesFragment extends Fragment {
 
     TextView querytextresult;
 
@@ -40,7 +40,7 @@ public class ViewOrderFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ViewOrderFragment() {
+    public ViewSalesFragment() {
         // Required empty public constructor
     }
 
@@ -53,8 +53,8 @@ public class ViewOrderFragment extends Fragment {
      * @return A new instance of fragment ViewOrderFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ViewOrderFragment newInstance(String param1, String param2) {
-        ViewOrderFragment fragment = new ViewOrderFragment();
+    public static ViewSalesFragment newInstance(String param1, String param2) {
+        ViewSalesFragment fragment = new ViewSalesFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -74,7 +74,7 @@ public class ViewOrderFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_view_order, container, false);
+        View view = inflater.inflate(R.layout.fragment_view_sales, container, false);
 
         querytextresult = view.findViewById(R.id.txtqueryresult);
         CollectionReference collectionReference = db.collection("Sales");

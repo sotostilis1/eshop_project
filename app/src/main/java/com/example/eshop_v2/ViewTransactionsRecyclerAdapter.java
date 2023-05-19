@@ -22,6 +22,12 @@ public class ViewTransactionsRecyclerAdapter extends RecyclerView.Adapter<ViewTr
         this.context = context;
     }
 
+    public void updateList(List<supplies> newList) {
+        list = newList;
+
+        notifyDataSetChanged();
+    }
+
 
     @NonNull
     @Override

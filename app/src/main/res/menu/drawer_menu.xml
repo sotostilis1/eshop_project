@@ -24,7 +24,7 @@
                     android:title="@string/delete_supp" />
                 <item
                     android:id="@+id/view_suppliers"
-                    android:title="     View suppliers" />
+                    android:title="     View Suppliers" />
             </group>
         </menu>
     </item>
@@ -57,10 +57,10 @@
             <group>
                 <item
                     android:id="@+id/add_transaction"
-                    android:title="     Add transaction" />
+                    android:title="     Add Transaction" />
                 <item
                     android:id="@+id/view_transaction"
-                    android:title="     View transactions" />
+                    android:title="     View Transactions" />
 
 
             </group>
@@ -74,25 +74,25 @@
             <group>
                 <item
                     android:id="@+id/add_customer"
-                    android:title="     Add Customer" />
+                    android:title="     Add Customers" />
                 <item
                     android:id="@+id/del_customer"
-                    android:title="     Delete Customer" />
+                    android:title="     Delete Customers" />
                 <item
                     android:id="@+id/view_customers"
-                    android:title="     View customers" />
+                    android:title="     View Customers" />
 
 
             </group>
         </menu>
     </item>
     <item
-        android:title="Orders">
+        android:title="Sales">
         <menu>
             <group>
                 <item
-                    android:id="@+id/view_orders"
-                    android:title="     View Orders" />
+                    android:id="@+id/view_sales"
+                    android:title="     View Sales" />
             </group>
         </menu>
     </item>

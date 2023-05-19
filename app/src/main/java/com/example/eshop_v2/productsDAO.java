@@ -28,6 +28,15 @@ public interface productsDAO {
     @Query("SELECT * FROM products WHERE product_quantity > 0")
     List<products> getProductsByQuantity();
 
+    @Query("SELECT * FROM products ORDER BY product_price ASC")
+    List<products> getProductsByAscendingPrice();
+
+    @Query("SELECT * FROM products ORDER BY product_price DESC")
+    List<products> getProductsByDescendingPrice();
+
+    @Query("SELECT * FROM products WHERE product_name LIKE '%' || :searchQuery || '%'")
+    List<products> searchProductsByName(String searchQuery);
+
 
 
 
@@ -54,6 +63,19 @@ public interface productsDAO {
     @Query("select * from supplies")
     public List<supplies> getSupplies();
 
+    @Query("SELECT * FROM supplies ORDER BY quantity ASC")
+    List<supplies> getTransactionsByAscendingQty();
+
+    @Query("SELECT * FROM supplies ORDER BY quantity DESC")
+    List<supplies> getTransactionsByDescendingQty();
+
+    @Query("SELECT * FROM supplies WHERE sid <> :supplierId")
+    List<supplies> searchProductsExcludingId(int supplierId);
+
+
+
+
+
 
     @Insert
     public void addCart (cart cart);
@@ -70,14 +92,7 @@ public interface productsDAO {
     @Query("SELECT * FROM cart WHERE product_ID = :id")
     public cart getByIdd(int id);
 
-    @Query("SELECT * FROM products ORDER BY product_price ASC")
-    List<products> getProductsByAscendingPrice();
 
-    @Query("SELECT * FROM products ORDER BY product_price DESC")
-    List<products> getProductsByDescendingPrice();
-
-    @Query("SELECT * FROM products WHERE product_name LIKE '%' || :searchQuery || '%'")
-    List<products> searchProductsByName(String searchQuery);
 
 
 

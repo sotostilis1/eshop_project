@@ -8,8 +8,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.PopupMenu;
 
 import java.util.List;
 
@@ -26,6 +30,9 @@ public class ViewTransactionsFragment extends Fragment {
     private List<supplies> list;
     private ViewTransactionsRecyclerAdapter adapter;
     private Context context;
+    Button btn_filter ,btn_check;
+
+    EditText editText;
 
     productsDAO dao = MainActivity.productsDatabase.productsDAOtemp();
 
@@ -80,10 +87,62 @@ public class ViewTransactionsFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         list = dao.getSupplies();
 
+        editText = view.findViewById(R.id.search_id);
+        btn_check = view.findViewById(R.id.check_button);
 
         adapter = new ViewTransactionsRecyclerAdapter( list, context);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
+        context = getContext();
+
+        btn_filter = view.findViewById(R.id.filter_button);
+        btn_check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               int  Var_sid = Integer.parseInt(editText.getText().toString());
+                List<supplies> filteredList3 = dao.searchProductsExcludingId(Var_sid);
+                adapter.updateList(filteredList3);
+                editText.setVisibility(View.INVISIBLE);
+                btn_check.setVisibility(View.INVISIBLE);
+
+            }
+        });
+        btn_filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(context, view);
+                popupMenu.getMenuInflater().inflate(R.menu.filter_menu, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        // Handle menu item clicks here
+                        switch (item.getItemId()) {
+
+                            case R.id.filter_item3:
+                                List<supplies> filteredList = dao.getTransactionsByAscendingQty();
+                                adapter.updateList(filteredList);
+                                break;
+                            case R.id.filter_item4:
+                                List<supplies> filteredList1 = dao.getTransactionsByDescendingQty();
+                                adapter.updateList(filteredList1);
+                                break;
+                            case R.id.filter_item2:
+                                List<supplies> filteredList2 = dao.getSupplies();
+                                adapter.updateList(filteredList2);
+                                break;
+                            case R.id.filter_item1:
+                                editText.setVisibility(View.VISIBLE);
+                                btn_check.setVisibility(View.VISIBLE);
+
+                                break;
+                        }
+                        return true;
+                    }
+                });
+                popupMenu.show();
+
+            }
+        });
 
 
         return view;

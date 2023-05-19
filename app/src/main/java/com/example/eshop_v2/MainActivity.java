@@ -9,8 +9,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.annotation.SuppressLint;
@@ -20,13 +18,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -138,8 +132,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.view_customers:
                 showFragment(new ViewCustomerFragment());
                 break;
-            case R.id.view_orders:
-                showFragment(new ViewOrderFragment());
+            case R.id.view_sales:
+                showFragment(new ViewSalesFragment());
                 break;
             case R.id.view_transaction:
                 showFragment(new ViewTransactionsFragment());
