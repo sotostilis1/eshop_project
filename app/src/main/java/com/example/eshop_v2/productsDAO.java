@@ -25,6 +25,9 @@ public interface productsDAO {
     @Query("SELECT * FROM products WHERE product_id = :id")
     public products getById(int id);
 
+    @Query("SELECT * FROM products WHERE product_quantity > 0")
+    List<products> getProductsByQuantity();
+
 
 
 
@@ -66,6 +69,15 @@ public interface productsDAO {
 
     @Query("SELECT * FROM cart WHERE product_ID = :id")
     public cart getByIdd(int id);
+
+    @Query("SELECT * FROM products ORDER BY product_price ASC")
+    List<products> getProductsByAscendingPrice();
+
+    @Query("SELECT * FROM products ORDER BY product_price DESC")
+    List<products> getProductsByDescendingPrice();
+
+    @Query("SELECT * FROM products WHERE product_name LIKE '%' || :searchQuery || '%'")
+    List<products> searchProductsByName(String searchQuery);
 
 
 

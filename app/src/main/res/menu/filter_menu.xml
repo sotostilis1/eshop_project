@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/filter_item2"
+        android:title="Show all products" />
+    <item
+        android:id="@+id/filter_item3"
+        android:title="Ascending Price" />
+    <item
+        android:id="@+id/filter_item4"
+        android:title="Descending Price" />
+    <item
+        android:id="@+id/filter_item1"
+        android:title="Hide out of stock products" />
+
+</menu>

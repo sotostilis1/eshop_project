@@ -1,9 +1,13 @@
 package com.example.eshop_v2;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.PopupMenu;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -30,6 +34,10 @@ public class ViewCustomerFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private List<Customers> list;
     private CustomerViewRecyclerAdapter adapter;
+
+    private Context context;
+
+    Button filter_btn;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -85,6 +93,33 @@ public class ViewCustomerFragment extends Fragment {
         adapter = new CustomerViewRecyclerAdapter(new ArrayList<>(), getContext());
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
+
+        filter_btn = view.findViewById(R.id.filter_button1);
+        filter_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(context, view);
+                popupMenu.getMenuInflater().inflate(R.menu.filter_menu_firebase, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        // Handle menu item clicks here
+                        switch (item.getItemId()) {
+                            case R.id.filter_item1:
+                                // Handle filter item 1 click
+                                break;
+                            case R.id.filter_item2:
+                                // Handle filter item 2 click
+                                break;
+                            // Handle other menu item clicks as needed
+                        }
+                        return true;
+                    }
+                });
+                popupMenu.show();
+
+            }
+        });
 
 
 

@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if(savedInstanceState!=null){
                 return;
             }
-            fragmentManager.beginTransaction().add(R.id.fragment_container, new CentralFragment()).commit();
+            fragmentManager.beginTransaction().add(R.id.fragment_container, new HomeFragment()).commit();
         }
 
 
@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle menu item clicks here
         int itemId = item.getItemId();
         if (itemId == R.id.action_cart) {
             showFragment(new CartFragment());
@@ -108,9 +107,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()){
             case R.id.home:
                 showFragment(new HomeFragment());
-                break;
-            case R.id.profile:
-                showFragment(new ProductsFragment());
                 break;
             case R.id.add_product_option:
                 showFragment(new AddProductsFragment());
@@ -146,10 +142,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 showFragment(new ViewOrderFragment());
                 break;
             case R.id.view_transaction:
-                showFragment(new ViewOrderFragment());
+                showFragment(new ViewTransactionsFragment());
                 break;
             case R.id.view_suppliers:
-                showFragment(new ViewOrderFragment());
+                showFragment(new ViewSuppliersFragment());
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);

@@ -10,10 +10,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +42,8 @@ public class HomeFragment extends Fragment {
     private List<products> list;
     private RecyclerAdapter adapter;
     private Context context;
+
+    Button btn_filter;
 
     productsDAO dao = MainActivity.productsDatabase.productsDAOtemp();
 
@@ -99,11 +104,49 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         list = dao.getProducts();
         DbHelper dbHelper = new DbHelper(context);
-        products prod = new products();
+
         Cursor cursor = dbHelper.getAllData();
         adapter = new RecyclerAdapter(list, cursor,context);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
+
+
+        btn_filter = view.findViewById(R.id.filter_button);
+        btn_filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(context, view);
+                popupMenu.getMenuInflater().inflate(R.menu.filter_menu, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        // Handle menu item clicks here
+                        switch (item.getItemId()) {
+
+                            case R.id.filter_item1:
+                                List<products> filteredList = dao.getProductsByQuantity();
+                                adapter.updateList(filteredList);
+                                break;
+                            case R.id.filter_item2:
+                                List<products> filteredList1 = dao.getProducts();
+                                adapter.updateList(filteredList1);
+                                break;
+                            case R.id.filter_item3:
+                                List<products> filteredList2 = dao.getProductsByAscendingPrice();
+                                adapter.updateList(filteredList2);
+                                break;
+                            case R.id.filter_item4:
+                                List<products> filteredList3 = dao.getProductsByDescendingPrice();
+                                adapter.updateList(filteredList3);
+                                break;
+                        }
+                        return true;
+                    }
+                });
+                popupMenu.show();
+
+            }
+        });
 
         return view;
     }

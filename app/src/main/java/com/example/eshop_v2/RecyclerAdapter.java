@@ -32,6 +32,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         this.context = context;
     }
 
+    public void updateList(List<products> newList) {
+        list = newList;
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

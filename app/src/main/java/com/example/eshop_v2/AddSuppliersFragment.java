@@ -99,6 +99,7 @@ public class AddSuppliersFragment extends Fragment {
 
 
                     MainActivity.productsDatabase.productsDAOtemp().addSuppliers(supps);
+                    Toast.makeText(getActivity(),"supplier added",Toast.LENGTH_LONG).show();
 
 
                 } catch (Exception e) {
@@ -106,28 +107,14 @@ public class AddSuppliersFragment extends Fragment {
                     System.out.println(message);
                     Toast.makeText(getActivity(),message,Toast.LENGTH_LONG).show();
                 }
-                Toast.makeText(getActivity(),"supplier added",Toast.LENGTH_LONG).show();
+
                 EdtTxt1.setText("");
                 EdtTxt2.setText("");
 
 
             }
         });
-        btn_query = view.findViewById(R.id.button_query3);
-        btn_query.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                List<suppliers> Suppliers = MainActivity.productsDatabase.productsDAOtemp().getSuppliers();
-                String result  = "";
-                for(suppliers i: Suppliers) {
-                    String name = i.getName();
-                    int id = i.getId();
-                    result = result + "\n name: " + name +" \n id: "+id;
-                }
-                textview1.setText(result);
 
-            }
-        });
 
 
 

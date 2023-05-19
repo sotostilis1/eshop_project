@@ -23,9 +23,9 @@ public class AddSuppliersLandscFragment extends Fragment {
 
 
     EditText EdtTxt1 , EdtTxt2;
-    Button Btn_save , btn_query;
+    Button Btn_save;
 
-    TextView txtview , textview1;
+    TextView txtview;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -73,7 +73,7 @@ public class AddSuppliersLandscFragment extends Fragment {
 
 
         View view =inflater.inflate(R.layout.fragment_add_suppliers_landsc, container, false);
-        textview1 = view.findViewById(R.id.textview3);
+
         txtview = view.findViewById(R.id.supp1);
         EdtTxt1 = view.findViewById(R.id.edit_text_name3);
         EdtTxt2 = view.findViewById(R.id.edit_text_id3);
@@ -99,6 +99,7 @@ public class AddSuppliersLandscFragment extends Fragment {
 
 
                     MainActivity.productsDatabase.productsDAOtemp().addSuppliers(supps);
+                    Toast.makeText(getActivity(),"supplier added",Toast.LENGTH_LONG).show();
 
 
                 } catch (Exception e) {
@@ -106,28 +107,14 @@ public class AddSuppliersLandscFragment extends Fragment {
                     System.out.println(message);
                     Toast.makeText(getActivity(),message,Toast.LENGTH_LONG).show();
                 }
-                Toast.makeText(getActivity(),"supplier added",Toast.LENGTH_LONG).show();
+
                 EdtTxt1.setText("");
                 EdtTxt2.setText("");
 
 
             }
         });
-        btn_query = view.findViewById(R.id.button_query3);
-        btn_query.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                List<suppliers> Suppliers = MainActivity.productsDatabase.productsDAOtemp().getSuppliers();
-                String result  = "";
-                for(suppliers i: Suppliers) {
-                    String name = i.getName();
-                    int id = i.getId();
-                    result = result + "\n name: " + name +" \n id: "+id;
-                }
-                textview1.setText(result);
 
-            }
-        });
 
 
 
